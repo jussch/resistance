@@ -1,0 +1,7 @@
+{
+  "generator-react-webpack": {
+    "appName": "resistance",
+    "style": "scss",
+    "postcss": true
+  }
+}
