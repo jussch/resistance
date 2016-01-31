@@ -1,22 +1,26 @@
 require('normalize.css');
 require('styles/App.css');
 
-import React from 'react';
+import React, { Component, PropTypes } from 'react';
+import UsersComponent from './UsersComponent';
 
 let yeomanImage = require('../images/yeoman.png');
 
-class AppComponent extends React.Component {
+class AppComponent extends Component {
   render() {
+    console.info(this.props);
     return (
       <div className="index">
         <img src={yeomanImage} alt="Yeoman Generator" />
-        <div className="notice">Please edit <code>src/components/Main.js</code> to get started! Tests!</div>
+        <div className="notice">There are {this.props.users.list.length} users.</div>
+        <UsersComponent users={this.props.users.list}/>
       </div>
     );
   }
 }
 
 AppComponent.defaultProps = {
+  users: PropTypes.array.isRequired
 };
 
 export default AppComponent;
