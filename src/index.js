@@ -3,6 +3,7 @@ import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import configureStore from './stores';
 import App from './containers/App';
+import connect from './socket/socket';
 
 const store = configureStore();
 
@@ -12,3 +13,5 @@ render(
   </Provider>,
   document.getElementById('app')
 );
+
+connect();

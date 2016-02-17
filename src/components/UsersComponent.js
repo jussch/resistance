@@ -6,9 +6,10 @@ require('styles//Users.scss');
 
 class UsersComponent extends React.Component {
   render() {
+    const users = this.props.users;
     return (
       <div className="users-component">
-        Please edit src/components///UsersComponent.js to update this component!
+        There are {users.list.length} users.
       </div>
     );
   }
