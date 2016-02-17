@@ -13,7 +13,17 @@ module.exports = function(state = initialState, action) {
   switch(action.type) {
     case 'JOIN': {
       // Modify next state depending on the action and return it
-      nextState.list.push(action.user);
+      nextState.list.push(action.parameter.user);
+      return nextState;
+    } break;
+    case 'LEAVE': {
+      // Modify next state depending on the action and return it
+      const idx = nextState.list.indexOf(action.parameter.user);
+      if (idx >= 0) nextState.list.splice(idx, 1);
+      return nextState;
+    } break;
+    case 'FETCH': {
+      nextState.list = action.parameter.users;
       return nextState;
     } break;
     default: {

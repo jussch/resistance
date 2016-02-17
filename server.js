@@ -38,6 +38,8 @@ app.get('/', (req, res) => {
 const server = new http.Server(app);
 const io = require('socket.io')(server);
 
+require('./controllers/base')(io);
+
 const PORT = process.env.PORT || webpackConfig.port;
 
 server.listen(PORT, 'localhost', function(err) {
@@ -46,10 +48,4 @@ server.listen(PORT, 'localhost', function(err) {
   }
 
   console.log('Listening at localhost:' + PORT);
-});
-
-io.on('connection', (socket) => {
-  // <insert relevant code here>
-  console.log('Connection received.');
-  socket.emit('message', { message: 'hello' });
 });

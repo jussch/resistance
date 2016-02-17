@@ -34,7 +34,11 @@ function mapStateToProps(state) {
 }
 function mapDispatchToProps(dispatch) {
   /* Populated by react-webpack-redux:action */
-  const actions = { join: require('..\\actions\\users\\join.js') };
+  const actions = {
+    join: require('..\\actions\\users\\join.js'),
+    leave: require('..\\actions\\users\\leave.js'),
+    fetch: require('..\\actions\\users\\fetch.js')
+  };
   const actionMap = { actions: bindActionCreators(actions, dispatch) };
   return actionMap;
 }
