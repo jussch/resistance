@@ -1,12 +1,14 @@
+/*eslint no-console:0 */
 /**
  * Created by Justin on 2016-02-16.
  */
 'use strict';
 const _ = require('lodash');
+const GameControlller = require('./game');
 
 module.exports = function UserControllers(io) {
   io.on('connection', socket => {
-    let socketRoom = null;
+    socket.gameRoom = null;
     socket.nickname = _.uniqueId('nickname_');
     console.log('Connection Received:', socket.nickname);
 
@@ -15,18 +17,20 @@ module.exports = function UserControllers(io) {
     });
 
     socket.on('disconnect', () => {
-      fetchUsers(socketRoom);
+      fetchUsers(socket.gameRoom);
     });
 
+    GameControlller(io, socket);
+
     function goToRoom(room) {
-      console.log('Moving', socket.nickname, 'from', socketRoom, 'to', room);
-      if (socketRoom) {
-        socket.leave(socketRoom);
+      console.log('Moving', socket.nickname, 'from', socket.gameRoom, 'to', room);
+      if (socket.gameRoom) {
+        socket.leave(socket.gameRoom);
         socket.emit('users:leave');
-        fetchUsers(socketRoom);
+        fetchUsers(socket.gameRoom);
       }
 
-      socketRoom = room;
+      socket.gameRoom = room;
       if (room) {
         socket.join(room);
         socket.emit('users:join', { room: room });

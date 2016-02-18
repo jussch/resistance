@@ -1,11 +1,9 @@
 require('normalize.css');
 require('styles/App.css');
 
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import UsersComponent from './UsersComponent';
 import GameComponent from './GameComponent';
-
-let yeomanImage = require('../images/yeoman.png');
 
 class AppComponent extends Component {
   render() {

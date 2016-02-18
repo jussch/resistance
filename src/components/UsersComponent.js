@@ -16,7 +16,7 @@ class UsersComponent extends React.Component {
     const users = this.props.users;
     return (
       <div className="users-component">
-        There are {users.list.length} users.
+        Join a room.
         <form onSubmit={this.handleSubmit.bind(this)}>
           <label htmlFor="room">Room</label>
           <input type="text" id="room" name="room" disabled={!!users.requestRoom}/>

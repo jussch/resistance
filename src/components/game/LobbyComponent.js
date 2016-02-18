@@ -12,7 +12,7 @@ class LobbyComponent extends React.Component {
     this.props.actions.access({ room: false });
   }
   render() {
-    const {users, actions} = this.props;
+    const {users} = this.props;
     const handleLeave = this.handleLeave.bind(this);
     return (
       <div className="lobby-component">

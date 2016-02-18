@@ -14,8 +14,8 @@ import Main from '../components/Main';
 /* Populated by react-webpack-redux:reducer */
 class App extends Component {
   render() {
-    const {actions, users} = this.props;
-    return <Main actions={actions} users={users}/>;
+    const {actions, users, game} = this.props;
+    return <Main actions={actions} users={users} game={game}/>;
   }
 }
 /* Populated by react-webpack-redux:reducer
@@ -25,11 +25,15 @@ class App extends Component {
  */
 App.propTypes = {
   actions: PropTypes.object.isRequired,
-  users: PropTypes.object.isRequired
+  users: PropTypes.object.isRequired,
+  game: PropTypes.object.isRequired
 };
 function mapStateToProps(state) {
   /* Populated by react-webpack-redux:reducer */
-  const props = { users: state.users };
+  const props = {
+    users: state.users,
+    game: state.game
+  };
   return props;
 }
 function mapDispatchToProps(dispatch) {
@@ -38,7 +42,12 @@ function mapDispatchToProps(dispatch) {
     join: require('..\\actions\\users\\join.js'),
     leave: require('..\\actions\\users\\leave.js'),
     fetch: require('..\\actions\\users\\fetch.js'),
-    access: require('..\\actions\\users\\access.js')
+    access: require('..\\actions\\users\\access.js'),
+    start: require('..\\actions\\game\\start.js'),
+    cancel: require('..\\actions\\game\\cancel.js'),
+    countdown: require('..\\actions\\game\\countdown.js'),
+    initialize: require('..\\actions\\game\\initialize.js'),
+    stop: require('..\\actions\\game\\stop.js')
   };
   const actionMap = { actions: bindActionCreators(actions, dispatch) };
   return actionMap;
