@@ -3,17 +3,24 @@ require('styles/App.css');
 
 import React, { Component, PropTypes } from 'react';
 import UsersComponent from './UsersComponent';
+import GameComponent from './GameComponent';
 
 let yeomanImage = require('../images/yeoman.png');
 
 class AppComponent extends Component {
   render() {
-    //console.info(this.props);
+    const {actions, users} = this.props;
+
+    let mainComp;
+    if (!this.props.users.room) {
+      mainComp = <UsersComponent users={users} actions={actions}/>;
+    } else {
+      mainComp = <GameComponent users={users} actions={actions}/>;
+    }
+
     return (
       <div className="index">
-        <img src={yeomanImage} alt="Yeoman Generator" />
-        <div className="notice">There are {this.props.users.list.length} users.</div>
-        <UsersComponent users={this.props.users}/>
+        {mainComp}
       </div>
     );
   }

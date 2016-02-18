@@ -1,6 +1,7 @@
 /**
  * Created by Justin on 2016-02-16.
  */
+const io = require('socket.io-client');
 const userJoin = require('../actions/users/join');
 const userLeave = require('../actions/users/leave');
 const userFetch = require('../actions/users/fetch');

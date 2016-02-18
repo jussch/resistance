@@ -7,7 +7,8 @@ const users = {};
 
 module.exports = function UserControllers(io) {
   io.on('connection', socket => {
-    const socketId = _.uniqueId('user_');
+    let socketRoom = null;
+    const socketId = socket.id;
     users[socketId] = socket;
     console.log('Connection Received:', socketId);
 
@@ -23,10 +24,9 @@ module.exports = function UserControllers(io) {
 
     socket.on('disconnect', () => {
       delete users[socketId];
-      fetchUsers();
+      fetchUsers(socketRoom);
     });
 
-    let socketRoom = null;
     function goToRoom(room) {
       if (socketRoom) {
         socket.leave(socketRoom);

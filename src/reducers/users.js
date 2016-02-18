@@ -13,13 +13,12 @@ module.exports = function(state = initialState, action) {
   switch(action.type) {
     case 'JOIN': {
       // Modify next state depending on the action and return it
-      nextState.list.push(action.parameter.user);
+      nextState.room = action.parameter.room;
       return nextState;
     } break;
     case 'LEAVE': {
       // Modify next state depending on the action and return it
-      const idx = nextState.list.indexOf(action.parameter.user);
-      if (idx >= 0) nextState.list.splice(idx, 1);
+      nextState.room = null;
       return nextState;
     } break;
     case 'FETCH': {
