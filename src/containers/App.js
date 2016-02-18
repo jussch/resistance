@@ -37,7 +37,8 @@ function mapDispatchToProps(dispatch) {
   const actions = {
     join: require('..\\actions\\users\\join.js'),
     leave: require('..\\actions\\users\\leave.js'),
-    fetch: require('..\\actions\\users\\fetch.js')
+    fetch: require('..\\actions\\users\\fetch.js'),
+    access: require('..\\actions\\users\\access.js')
   };
   const actionMap = { actions: bindActionCreators(actions, dispatch) };
   return actionMap;

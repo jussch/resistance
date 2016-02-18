@@ -16,4 +16,12 @@ module.exports = function connect(store) {
   socket.on('users:join', data => store.dispatch(userJoin(data)));
   socket.on('users:leave', data => store.dispatch(userLeave(data)));
   socket.on('users:fetch', data => store.dispatch(userFetch(data)));
+
+  store.subscribe(() => {
+    const state = store.getState();
+    if (state.users && state.users.requestRoom != null) {
+      // Short circuit if given false to send null.
+      socket.emit('users:access', { room: state.users.requestRoom || null });
+    }
+  });
 };

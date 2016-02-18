@@ -11,14 +11,23 @@ module.exports = function(state = initialState, action) {
   nextState.list = state.list.slice();
 
   switch(action.type) {
+    case 'ACCESS': {
+      // Modify next state depending on the action and return it
+      nextState.requestRoom = action.parameter.room;
+      return nextState;
+    } break;
     case 'JOIN': {
       // Modify next state depending on the action and return it
+      nextState.requestRoom = null;
       nextState.room = action.parameter.room;
+      nextState.list = [];
       return nextState;
     } break;
     case 'LEAVE': {
       // Modify next state depending on the action and return it
+      nextState.requestRoom = null;
       nextState.room = null;
+      nextState.list = [];
       return nextState;
     } break;
     case 'FETCH': {

@@ -7,7 +7,8 @@ require('styles//Users.scss');
 class UsersComponent extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
-    this.props.actions.join({
+    if (this.props.users.requestRoom) return;
+    this.props.actions.access({
       room: document.getElementById('room').value
     });
   }
@@ -18,7 +19,7 @@ class UsersComponent extends React.Component {
         There are {users.list.length} users.
         <form onSubmit={this.handleSubmit.bind(this)}>
           <label htmlFor="room">Room</label>
-          <input type="text" id="room" name="room"/>
+          <input type="text" id="room" name="room" disabled={!!users.requestRoom}/>
         </form>
       </div>
     );
