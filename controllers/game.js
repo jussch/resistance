@@ -76,5 +76,5 @@ module.exports.socketJoinsGame = function(socket, room) {
   console.log(socket.nickname, 'joins the game', room, '. Game Initialized:', !!game);
   if (!game) return;
 
-  socket.emit('game:get:state', { game: _.pick(game, gameAttrs) });
+  socket.emit('game:get:state', { game: game.getState() });
 };

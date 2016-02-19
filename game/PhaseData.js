@@ -4,13 +4,23 @@
 'use strict';
 const _ = require('lodash');
 
-function PhaseData(initalState) {
-  this.initialState = _.extend({}, initalState);
-  this.data = _.extend({}, initalState);
+function PhaseData(initialState) {
+  this.initialState = _.extend({}, initialState);
+  this.data = _.extend({}, initialState);
 }
 
 PhaseData.prototype.set = function(name, data) {
   this.data[name] = data;
+  return this;
+};
+
+PhaseData.prototype.extend = function(name, data) {
+  this.data[name] = _.extend({}, this.data[name], data);
+  return this;
+};
+
+PhaseData.prototype.add = function(name, data) {
+  this.data[name] = this.data[name].concat(data);
   return this;
 };
 

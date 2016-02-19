@@ -42,6 +42,12 @@ PlayerList.prototype.getNicknames = function() {
   return _.map(this.list, 'nickname');
 };
 
+PlayerList.prototype.fromNicknames = function(nicknames) {
+  return this.filter((player) => {
+    return _.includes(nicknames, player.nickname);
+  });
+};
+
 PlayerList.prototype.getSize = function() {
   return _.size(this.list);
 };
