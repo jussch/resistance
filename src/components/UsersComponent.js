@@ -7,9 +7,14 @@ require('styles//Users.scss');
 class UsersComponent extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
-    if (this.props.users.requestRoom) return;
+
+    const room = document.getElementById('room').value;
+    const nickname = document.getElementById('nickname').value;
+    if (this.props.users.requestRoom || !room || !nickname) return;
+
     this.props.actions.access({
-      room: document.getElementById('room').value
+      room: room,
+      nickname: nickname,
     });
   }
   render() {
@@ -18,8 +23,11 @@ class UsersComponent extends React.Component {
       <div className="users-component">
         Join a room.
         <form onSubmit={this.handleSubmit.bind(this)}>
+          <label htmlFor="nickname">Nickname</label>
+          <input type="text" id="nickname" name="nickname" disabled={!!users.requestRoom}/>
           <label htmlFor="room">Room</label>
           <input type="text" id="room" name="room" disabled={!!users.requestRoom}/>
+          <button role="submit" disabled={!!users.requestRoom}>Enter Game</button>
         </form>
       </div>
     );

@@ -4,47 +4,49 @@
 'use strict';
 const games = {};
 const _ = require('lodash');
+const gameSettings = require('./../game/config');
+const Game = require('./../game/Game');
+
+// TODO: Restrict access to rooms that have already started.
 
 module.exports = function LobbyControllers(io, socket) {
   socket.on('game:start', data => {
-    countDownGame(initializeGame(socket.gameRoom));
+    initializeGame(socket.gameRoom).startInitialCountdown();
   });
 
   socket.on('game:cancel', data => {
     const game = games[socket.gameRoom];
-    clearInterval(game.interval);
-    emitToSocketRoom('game:stop')
+    game.stopInitialCountdown();
+    game.emit('game:stop');
   });
 
-  function emitToSocketRoom(event, data) {
-    if (!socket.gameRoom) return;
-    io.to(socket.gameRoom).emit(event, data);
-  }
-
-  function countDownGame(game) {
-    if (game.started) return;
-
-    emitToSocketRoom('game:countdown', { countDown: game.countDown });
-    clearInterval(game.interval);
-    game.interval = setInterval(() => {
-      game.countDown--;
-      if (game.countDown) {
-        emitToSocketRoom('game:countdown', { countDown: game.countDown });
-      } else {
-        game.started = true;
-        clearInterval(game.interval);
-        emitToSocketRoom('game:initialize');
-      }
-    }, 1000);
+  function initializeGame(room) {
+    return games[room] || (games[room] = new Game(io, room));
   }
 };
 
-function initializeGame(room) {
-  var game = games[room] || (games[room] = {});
-  if (!game.started) {
-    game.countDown = 5;
-    game.started = false;
-  }
 
-  return game;
-}
+/**
+ * Returns boolean representing if the game can be joined or not.
+ * @param room
+ * @returns {boolean}
+ */
+module.exports.canJoinGame = function(room) {
+  const game = games[room];
+
+  // TODO: Detect Player Count
+  return !game || !game.started || !game.starting;
+};
+
+/**
+ * Sends the info to the socket giving them the current game info.
+ * @param socket
+ * @param room
+ */
+module.exports.socketJoinsGame = function(socket, room) {
+  const game = games[room];
+  console.log(socket.nickname, 'joins the game', room, '. Game Initialized:', !!game);
+  if (!game) return;
+
+  socket.emit('game:get:state', { game: _.pick(game, gameAttrs) });
+};

@@ -14,6 +14,7 @@ module.exports = function(state = initialState, action) {
     case 'ACCESS': {
       // Modify next state depending on the action and return it
       nextState.requestRoom = action.parameter.room;
+      nextState.myNickname = action.parameter.nickname;
       return nextState;
     } break;
     case 'JOIN': {

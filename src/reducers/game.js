@@ -3,7 +3,13 @@
  * If you change the type from object to something else, do not forget to update
  * src/container/App.js accordingly.
  */
-const initialState = {};
+const initialState = {
+  started: false,
+  starting: false,
+  countDown: 0,
+  requestStart: false,
+  requestCancel: false,
+};
 
 module.exports = function(state = initialState, action) {
   /* Keep the reducer clean - do not mutate the original state. */
@@ -33,6 +39,11 @@ module.exports = function(state = initialState, action) {
       nextState.requestCancel = false;
       nextState.countDown = null;
       nextState.starting = false;
+      return nextState;
+    } break;
+    case 'GET_STATE': {
+      Object.assign(nextState, action.parameter.game);
+      console.info('got state:', action.parameter.game);
       return nextState;
     } break;
     default: {

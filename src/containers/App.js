@@ -47,7 +47,8 @@ function mapDispatchToProps(dispatch) {
     cancel: require('..\\actions\\game\\cancel.js'),
     countdown: require('..\\actions\\game\\countdown.js'),
     initialize: require('..\\actions\\game\\initialize.js'),
-    stop: require('..\\actions\\game\\stop.js')
+    stop: require('..\\actions\\game\\stop.js'),
+    getState: require('..\\actions\\game\\getState.js')
   };
   const actionMap = { actions: bindActionCreators(actions, dispatch) };
   return actionMap;

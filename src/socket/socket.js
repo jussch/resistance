@@ -9,6 +9,7 @@ const userFetch = require('../actions/users/fetch');
 const gameCountdown = require('../actions/game/countdown');
 const gameInitialize = require('../actions/game/initialize');
 const gameStop = require('../actions/game/stop');
+const gameGetState = require('../actions/game/getState');
 
 module.exports = function connect(store) {
   var socket = io();
@@ -20,6 +21,7 @@ module.exports = function connect(store) {
   socket.on('game:countdown', data => store.dispatch(gameCountdown(data)));
   socket.on('game:initialize', data => store.dispatch(gameInitialize(data)));
   socket.on('game:stop', data => store.dispatch(gameStop(data)));
+  socket.on('game:get:state', data => store.dispatch(gameGetState(data)));
 
   store.subscribe(() => {
     const state = store.getState();
@@ -27,7 +29,10 @@ module.exports = function connect(store) {
     // User client-to-server actions
     if (state.users && state.users.requestRoom != null) {
       // Short circuit if given false to send null.
-      socket.emit('users:access', { room: state.users.requestRoom || null });
+      socket.emit('users:access', {
+        room: state.users.requestRoom || null,
+        nickname: state.users.myNickname,
+      });
     }
 
     // Game client-to-server actions

@@ -13,6 +13,8 @@ module.exports = function UserControllers(io) {
     console.log('Connection Received:', socket.nickname);
 
     socket.on('users:access', (data) => {
+      if (!GameController.canJoinGame(data.room)) return;
+      socket.nickname = data.nickname;
       goToRoom(data.room);
     });
 
@@ -35,6 +37,7 @@ module.exports = function UserControllers(io) {
         socket.join(room);
         socket.emit('users:join', { room: room });
         fetchUsers(room);
+        GameController.socketJoinsGame(socket, room);
       }
     }
   });
