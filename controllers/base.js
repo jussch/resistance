@@ -4,7 +4,7 @@
  */
 'use strict';
 const _ = require('lodash');
-const GameControlller = require('./game');
+const GameController = require('./game');
 
 module.exports = function UserControllers(io) {
   io.on('connection', socket => {
@@ -20,7 +20,7 @@ module.exports = function UserControllers(io) {
       fetchUsers(socket.gameRoom);
     });
 
-    GameControlller(io, socket);
+    GameController(io, socket);
 
     function goToRoom(room) {
       console.log('Moving', socket.nickname, 'from', socket.gameRoom, 'to', room);

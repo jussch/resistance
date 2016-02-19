@@ -7,13 +7,13 @@ import GameComponent from './GameComponent';
 
 class AppComponent extends Component {
   render() {
-    const {actions, users} = this.props;
+    const {actions, users, game} = this.props;
 
     let mainComp;
     if (!this.props.users.room) {
       mainComp = <UsersComponent users={users} actions={actions}/>;
     } else {
-      mainComp = <GameComponent users={users} actions={actions}/>;
+      mainComp = <GameComponent users={users} actions={actions} game={game}/>;
     }
 
     return (

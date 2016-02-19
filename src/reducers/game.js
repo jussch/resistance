@@ -19,7 +19,7 @@ module.exports = function(state = initialState, action) {
       return nextState;
     } break;
     case 'COUNTDOWN': {
-      nextState.countDown = action.parameters.countDown;
+      nextState.countDown = action.parameter.countDown;
       nextState.starting = true;
       nextState.requestStart = false;
       return nextState;

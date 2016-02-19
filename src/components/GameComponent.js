@@ -8,11 +8,19 @@ require('styles//Game.scss');
 
 class GameComponent extends React.Component {
   render() {
-    const {users, actions} = this.props;
+    const {users, actions, game} = this.props;
+
+    let gameStateComp;
+    if (!game.started) {
+      gameStateComp = <LobbyComponent users={users} actions={actions} game={game}/>
+    } else {
+
+    }
+
     return (
       <div className="game-component">
         <ListComponent list={users.list}/>
-        <LobbyComponent users={users} actions={actions}/>
+        {gameStateComp}
       </div>
     );
   }
