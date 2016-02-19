@@ -4,6 +4,7 @@
 'use strict';
 const games = {};
 const _ = require('lodash');
+const Util = require('./utilities');
 const gameSettings = require('./../game/config');
 const Game = require('./../game/Game');
 
@@ -11,13 +12,40 @@ const Game = require('./../game/Game');
 
 module.exports = function LobbyControllers(io, socket) {
   socket.on('game:start', data => {
-    initializeGame(socket.gameRoom).startInitialCountdown();
+    const room = socket.gameRoom;
+    const game = initializeGame(room);
+    const users = Util.getUsers(io, room);
+    if (!gameSettings(users.length)) return;
+
+    game.startInitialCountdown(() => {
+      game.setPlayers(Util.getUsers(io, room));
+    });
   });
 
   socket.on('game:cancel', data => {
     const game = games[socket.gameRoom];
     game.stopInitialCountdown();
     game.emit('game:stop');
+  });
+
+  socket.on('player:ready', data => {
+    const game = games[socket.gameRoom];
+    game.readyPlayer(socket);
+  });
+
+  socket.on('player:select:candidates', data => {
+    const game = games[socket.gameRoom];
+    game.selectCandidates(socket, data.candidates);
+  });
+
+  socket.on('player:vote', data => {
+    const game = games[socket.gameRoom];
+    game.playerVote(socket, data.pass);
+  });
+
+  socket.on('player:complete:mission', data => {
+    const game = games[socket.gameRoom];
+    game.playerCompleteMission(socket, data.success);
   });
 
   function initializeGame(room) {

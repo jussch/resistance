@@ -4,6 +4,7 @@
  */
 'use strict';
 const _ = require('lodash');
+const Util = require('./utilities');
 const GameController = require('./game');
 
 module.exports = function UserControllers(io) {
@@ -44,19 +45,10 @@ module.exports = function UserControllers(io) {
 
   function fetchUsers(room) {
     if (!room) return;
-    const roster = getUsers(room);
+    const roster = Util.getUsers(room);
     const names = _.map(roster, 'nickname');
 
     io.to(room).emit('users:fetch', { users: names });
-  }
-
-  function getUsers(room) {
-    const roomObj = io.sockets.adapter.rooms[room];
-    const clients = roomObj && roomObj.sockets;
-    return _(clients)
-      .keys()
-      .map(key => io.sockets.connected[key])
-      .value();
   }
 };
 
