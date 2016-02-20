@@ -45,7 +45,7 @@ module.exports = function UserControllers(io) {
 
   function fetchUsers(room) {
     if (!room) return;
-    const roster = Util.getUsers(room);
+    const roster = Util.getUsers(io, room);
     const names = _.map(roster, 'nickname');
 
     io.to(room).emit('users:fetch', { users: names });

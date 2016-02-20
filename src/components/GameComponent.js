@@ -1,25 +1,37 @@
 'use strict';
 
 import React from 'react';
-import LobbyComponent from './game/LobbyComponent';
 import ListComponent from './users/ListComponent';
+import PlayerListComponent from './players/PlayerListComponent';
+import LobbyComponent from './game/LobbyComponent';
+import InitialPhaseComponent from './game/InitialPhaseComponent';
+import PickPhaseComponent from './game/PickPhaseComponent';
 
 require('styles//Game.scss');
 
 class GameComponent extends React.Component {
   render() {
-    const {users, actions, game} = this.props;
+    const {users, game, players} = this.props;
+
+    let listComp;
+    if (!game.started) {
+      listComp = <ListComponent list={users.list}/>;
+    } else {
+      listComp = <PlayerListComponent players={players}/>
+    }
 
     let gameStateComp;
-    if (!game.started) {
-      gameStateComp = <LobbyComponent users={users} actions={actions} game={game}/>
-    } else {
-
+    if (game.phase === 'lobby') {
+      gameStateComp = <LobbyComponent {...this.props}/>;
+    } else if (game.phase === 'initial') {
+      gameStateComp = <InitialPhaseComponent {...this.props}/>
+    } else if (game.phase === 'pick') {
+      gameStateComp = <PickPhaseComponent {...this.props}/>
     }
 
     return (
       <div className="game-component">
-        <ListComponent list={users.list}/>
+        {listComp}
         {gameStateComp}
       </div>
     );

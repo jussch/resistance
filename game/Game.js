@@ -110,7 +110,8 @@ Game.prototype.enterPhase = function(phase) {
   }
 
   this.phase = phase;
-  this.log('Entering Phase:', this.phase);
+  const args = _.drop(arguments, 1);
+  this.log('Entering Phase:', this.phase, 'with args:', args);
 
   let phaseFunction;
   switch (this.phase) {
@@ -121,7 +122,7 @@ Game.prototype.enterPhase = function(phase) {
     case 'END': phaseFunction = this.enterPhaseEnd; break;
   }
 
-  phaseFunction.apply(this, _.drop(arguments, 1));
+  phaseFunction.apply(this, args);
 
   return this;
 };
@@ -136,11 +137,12 @@ Game.prototype.enterPhaseInitial = function() {
   this.emit('game:settings', this.settings);
   this.emit('player:get:data', { players: this.players.getNicknames() });
 
-  const spies = this.players.selectRandom(this.settings.numOfSpies).each((player) => {
+  const spies = this.players.selectRandomList(this.settings.numOfSpies).each((player) => {
     player.setIsSpy();
   });
 
   const spyNames = spies.getNicknames();
+  this.log('The spies of this match are:', spyNames);
   spies.emit('player:set:data', { spy: true, players: spyNames });
 };
 
@@ -163,14 +165,17 @@ Game.prototype.enterPhasePick = function() {
     return !_.includes(previousLeaders, player);
   });
 
-  if (!potentialLeaders.length) {
+  if (!potentialLeaders.getSize()) {
     // If there are no more potentail leaders, the winners are the spies.
+    this.log('There are no more potential leaders.');
     this.enterPhase('end', { winner: 'spies' });
     return;
   }
 
   const leader = potentialLeaders.selectRandom(1);
-  phaseData.set('previousLeaders', previousLeaders.concat(leader));
+  phaseData.add('previousLeaders', leader);
+
+  this.log('Electing leader:', leader.nickname);
   this.emit('game:select:leader', {
     leader: leader.nickname,
     round: this.round,
@@ -179,6 +184,7 @@ Game.prototype.enterPhasePick = function() {
 
 Game.prototype.selectCandidates = function(player, candidates) {
   if (!this.isPhase('PICK')) return;
+  this.log('selected candidates', candidates);
   candidates = this.players.fromNicknames(candidates);
   this.enterPhase('VOTE', {
     candidates
@@ -190,7 +196,7 @@ Game.prototype.enterPhaseVote = function(options) {
   const candidates = options.candidates;
 
   this.getPhaseData('VOTE').clear().set('candidates', candidates);
-  this.emit('game:enter:vote', { candidates });
+  this.emit('game:enter:vote', { candidates: candidates.getNicknames() });
 };
 
 Game.prototype.playerVote = function(player, passVote) {
@@ -205,7 +211,8 @@ Game.prototype.playerVote = function(player, passVote) {
   phaseData.extend('voted', { [player.id]: player });
   phaseData.add(passVote ? 'passed' : 'failed', player.nickname);
 
-  this.emit('player:voted', { player: player.nickame });
+  this.log('received player vote:', player.nickname);
+  this.emit('player:voted', { player: player.nickname });
 
   if (_.size(voted) === this.players.getSize()) {
     this.endPhaseVote();
@@ -250,6 +257,7 @@ Game.prototype.playerCompleteMission = function(player, isSuccess) {
 
   phaseData.increment(isSuccess ? 'successes' : 'sabotages');
   phaseData.decrement('left');
+  this.log('received player completing mission:', player.nickname);
   this.emit('player:finished:mission', { player: player.nickname });
 
   if (!phaseData.get('left')) {
@@ -265,10 +273,12 @@ Game.prototype.endPhaseMission = function() {
   const spyWin = phaseData.get('sabotages') >= roundSettings.failsNeeded;
   const winner = spyWin ? 'spies' : 'resistance';
   const field = spyWin ? 'spyWins' : 'resistanceWins';
+  this.log(`round ${this.round} over. ${winner} wins the round.`);
   this.round++;
 
   general.increment(field);
   if (general.get(field) >= 3) {
+    this.log(field, 'is above 3.', winner, 'wins the game.');
     this.enterPhase('END', { winner });
   } else {
     this.emit('game:mission:complete', { winner });
@@ -280,6 +290,7 @@ Game.prototype.enterPhaseEnd = function(options) {
   options = options || {};
   const winner = options.candidates;
 
+  this.log('game over.');
   this.emit('game:end', { winner });
 };
 

@@ -1,0 +1,7 @@
+.selectableplayerlistitem-component {
+  border: 1px dashed #f00;
+  &.highlighted {
+    color: #333;
+    background: #fff;
+  }
+}

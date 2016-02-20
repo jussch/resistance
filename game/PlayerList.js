@@ -52,8 +52,12 @@ PlayerList.prototype.getSize = function() {
   return _.size(this.list);
 };
 
-PlayerList.prototype.selectRandom = function(num) {
+PlayerList.prototype.selectRandomList = function(num) {
   return PlayerList.fromArray(_.sampleSize(this.list, num));
+};
+
+PlayerList.prototype.selectRandom = function() {
+  return _.sample(this.list);
 };
 
 PlayerList.prototype.filter = function(pred) {
@@ -64,3 +68,5 @@ PlayerList.prototype.each = function(callback) {
   _.each(this.list, callback);
   return this;
 };
+
+module.exports = PlayerList;

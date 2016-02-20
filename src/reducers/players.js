@@ -14,6 +14,7 @@ function initialPlayer(nickname) {
     completedMission: false,
     isCandidate: false,
     isLeader: false,
+    isSelected: false,
     wasLeader: false,
     votes: [],
     missionsFailed: 1,
@@ -25,6 +26,10 @@ module.exports = function(state = {}, action) {
   let nextState = _.cloneDeep(state);
 
   switch(action.type) {
+    case 'SELECT_CANDIDATE': {
+      nextState[action.parameter.candidate].isSelected = !nextState[action.parameter.candidate].isSelected;
+      return nextState;
+    } break;
     case 'GET_PLAYER_VOTES': {
       _.each(action.parameter.passed, (playerName) => {
         nextState[playerName].votes.push('PASS');
@@ -57,6 +62,7 @@ module.exports = function(state = {}, action) {
       return nextState;
     } break;
     case 'PLAYER_SET_DATA': {
+      console.log('action.parameter of players', action.parameter);
       _.each(action.parameter.players, (playerName) => {
         _.extend(nextState[playerName], _.omit(action.parameter, 'players'));
       });
@@ -74,6 +80,7 @@ module.exports = function(state = {}, action) {
     case 'ENTER_VOTE': {
       _.each(nextState, (player) => {
         player.voted = false;
+        player.isSelected = false;
       });
 
       _.each(action.parameter.candidates, (playerName) => {

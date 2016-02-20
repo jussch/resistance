@@ -80,12 +80,12 @@ module.exports = function connect(store) {
     if (state.player) {
       const player = state.player;
       if (player.requestCompleteMission) {
-        socket.emit('player:complete:mission', { success: state.missionSuccess });
+        socket.emit('player:complete:mission', { success: player.missionSuccess });
         store.dispatch(playerSentComplete());
       }
 
       if (player.requestVote) {
-        socket.emit('player:vote', { pass: state.vote });
+        socket.emit('player:vote', { pass: player.vote });
         store.dispatch(playerSentVote());
       }
 
@@ -95,7 +95,7 @@ module.exports = function connect(store) {
       }
 
       if (player.requestCandidates) {
-        socket.emit('player:select:candidates', { candidates: state.selectedCandidates });
+        socket.emit('player:select:candidates', { candidates: player.selectedCandidates });
         store.dispatch(playerSentCandidate());
       }
     }

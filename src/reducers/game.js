@@ -55,7 +55,7 @@ module.exports = function(state = initialState, action) {
     // aka. ENTER_PICK
     case 'SELECT_LEADER': {
       nextState.phase = 'pick';
-      nextState.currentRound = action.parameter.currentRound;
+      nextState.currentRound = action.parameter.round;
       return nextState;
     } break;
     case 'COUNTDOWN': {
