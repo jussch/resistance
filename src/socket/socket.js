@@ -5,6 +5,7 @@ const io = require('socket.io-client');
 const userJoin = require('../actions/users/join');
 const userLeave = require('../actions/users/leave');
 const userFetch = require('../actions/users/fetch');
+const userAccessSent = require('../actions/users/accessSent');
 
 const gameCountdown = require('../actions/game/countdown');
 const gameInitialize = require('../actions/game/initialize');
@@ -67,6 +68,8 @@ module.exports = function connect(store) {
         room: state.users.requestRoom || null,
         nickname: state.users.myNickname,
       });
+      
+      store.dispatch(userAccessSent());
     }
 
     // Game client-to-server actions

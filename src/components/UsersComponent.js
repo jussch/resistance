@@ -19,15 +19,37 @@ class UsersComponent extends React.Component {
   }
   render() {
     const users = this.props.users;
+    const inputSettings = {
+      type: 'text',
+      maxLength: 12,
+      style: { textTransform: 'uppercase' },
+      autoComplete: false,
+      disabled: !!users.requestRoom,
+    };
+
+    const roomVal = users.lastAccessed.room || '';
+    const nickVal = users.lastAccessed.nickname || '';
+
     return (
       <div className="users-component">
-        Join a room.
-        <form onSubmit={this.handleSubmit.bind(this)}>
-          <label htmlFor="nickname">Nickname</label>
-          <input type="text" id="nickname" name="nickname" maxLength="12" style={{textTransform: 'uppercase'}} disabled={!!users.requestRoom}/>
-          <label htmlFor="room">Room</label>
-          <input type="text" id="room" name="room" maxLength="6" style={{textTransform: 'uppercase'}} disabled={!!users.requestRoom}/>
-          <button role="submit" disabled={!!users.requestRoom}>Enter Game</button>
+        <h1 className="res-color">Resistance</h1>
+        <h2>Join a room</h2>
+        <form onSubmit={this.handleSubmit.bind(this)} autoComplete="off">
+          <div className="form-group">
+            <span className="form-group-addon">
+              <i className="fa fa-user fa-fw"/>
+            </span>
+            <input id="nickname" {...inputSettings} placeholder="Nickname" defaultValue={nickVal}/>
+          </div>
+
+          <div className="form-group">
+            <span className="form-group-addon">
+              <i className="fa fa-users fa-fw"/>
+            </span>
+            <input id="room" {...inputSettings} placeholder="Room Name" defaultValue={roomVal}/>
+          </div>
+
+          <button className="button" role="submit" disabled={!!users.requestRoom}>Enter Game</button>
         </form>
       </div>
     );

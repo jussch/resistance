@@ -9,9 +9,12 @@ class ListComponent extends React.Component {
   render() {
     const {list} = this.props;
     return (
-      <ul className="list-component">
-        {list.map((user, key) => (<ListItemComponent user={user} key={key}/>))}
-      </ul>
+      <div className="list-component">
+        <h2>Users</h2>
+        <ul className="user-list">
+          {list.map((user, key) => (<ListItemComponent user={user} key={key}/>))}
+        </ul>
+      </div>
     );
   }
 }

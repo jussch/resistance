@@ -83,7 +83,8 @@ function mapDispatchToProps(dispatch) {
     playerSentVote: require('..\\actions\\player\\playerSentVote.js'),
     requestRematch: require('..\\actions\\player\\requestRematch.js'),
     receivedRematch: require('..\\actions\\player\\receivedRematch.js'),
-    sentRematch: require('..\\actions\\player\\sentRematch.js')
+    sentRematch: require('..\\actions\\player\\sentRematch.js'),
+    accessSent: require('..\\actions\\users\\accessSent.js')
   };
   const actionMap = { actions: bindActionCreators(actions, dispatch) };
   return actionMap;

@@ -1,6 +1,7 @@
 require('normalize.css');
-require('styles/App.css');
 require('font-awesome-sass-loader');
+require('styles/utilities.scss');
+require('styles/App.scss');
 
 import React, { Component } from 'react';
 import UsersComponent from './UsersComponent';

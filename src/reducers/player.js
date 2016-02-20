@@ -21,6 +21,11 @@ const initialState = {
   ready: false,
   voted: false,
   completedMission: false,
+
+  lastAccessed: {
+    nickname: null,
+    room: null,
+  },
 };
 
 module.exports = function(state = initialState, action) {
@@ -41,6 +46,7 @@ module.exports = function(state = initialState, action) {
     } break;
     case 'ACCESS': {
       nextState.nickname = action.parameter.nickname;
+
       return nextState
     } break;
     case 'SELECT_CANDIDATE': {

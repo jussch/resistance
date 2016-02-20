@@ -1,3 +1,9 @@
 .countdown-component {
-  border: 1px dashed #f00;
+  margin-bottom: 5px;
+}
+
+.countdown-number {
+  font-family: 'Consolas', monospace;
+  font-size: 48px;
+  padding: 5px 20px;
 }

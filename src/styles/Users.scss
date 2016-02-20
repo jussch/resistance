@@ -1,5 +1,51 @@
+@import './colors';
 .users-component {
-  border: 1px dashed #f00;
-  background: #fff;
-  color: #333;
+  h1,
+  h2,
+  h3 {
+    padding: 0;
+    margin: 0 0 10px 0;
+  }
+  label {
+    display: block;
+  }
+
+}
+
+.form-group {
+  width: 100%;
+  position: relative;
+  display: table;
+  border-collapse: separate;
+  margin-bottom: 10px;
+  .form-group-addon {
+    display: table-cell;
+    padding: 4px 10px;
+    font-size: 14px;
+    width: 1%;
+    white-space: nowrap;
+    vertical-align: middle;
+    background: $action-background-color;
+    border: 1px solid $border-color;
+    border-right: 0;
+    border-top-left-radius: $border-radius;
+    border-bottom-left-radius: $border-radius;
+  }
+  input {
+    background: $action-background-color;
+    border: 1px solid $border-color;
+    border-top-right-radius: $border-radius;
+    border-bottom-right-radius: $border-radius;
+    display: table-cell;
+    padding: 4px 7px;
+    outline: 0;
+    height: 34px;
+    width: 100%;
+    &:focus {
+      box-shadow: 1px 1px $action-background-color;
+    }
+    &::-webkit-input-placeholder {
+      color: darken($text-color, 40%);
+    }
+  }
 }

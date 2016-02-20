@@ -12,9 +12,11 @@ class CountdownComponent extends React.Component {
   render() {
     const {game} = this.props;
     return (
-      <div className="countdown-component">
-        <strong className="countdown-number">{game.countDown}</strong>
-        <button onClick={this.handleCancel.bind(this)}>Cancel</button>
+      <div className="countdown-component button-group">
+        <div className="button-group-addon">
+          <strong className="countdown-number">{game.countDown}</strong>
+        </div>
+        <button className="button" onClick={this.handleCancel.bind(this)}>Cancel</button>
       </div>
     );
   }
