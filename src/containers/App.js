@@ -14,8 +14,15 @@ import Main from '../components/Main';
 /* Populated by react-webpack-redux:reducer */
 class App extends Component {
   render() {
-    const {actions, users, game} = this.props;
-    return <Main actions={actions} users={users} game={game}/>;
+    const {actions, users, game, player, players} = this.props;
+    return (
+      <Main
+        actions={actions}
+        users={users}
+        game={game}
+        player={player}
+        players={players}/>
+    );
   }
 }
 /* Populated by react-webpack-redux:reducer
@@ -26,13 +33,17 @@ class App extends Component {
 App.propTypes = {
   actions: PropTypes.object.isRequired,
   users: PropTypes.object.isRequired,
-  game: PropTypes.object.isRequired
+  game: PropTypes.object.isRequired,
+  player: PropTypes.object.isRequired,
+  players: PropTypes.object.isRequired
 };
 function mapStateToProps(state) {
   /* Populated by react-webpack-redux:reducer */
   const props = {
     users: state.users,
-    game: state.game
+    game: state.game,
+    player: state.player,
+    players: state.players
   };
   return props;
 }
@@ -48,7 +59,28 @@ function mapDispatchToProps(dispatch) {
     countdown: require('..\\actions\\game\\countdown.js'),
     initialize: require('..\\actions\\game\\initialize.js'),
     stop: require('..\\actions\\game\\stop.js'),
-    getState: require('..\\actions\\game\\getState.js')
+    getState: require('..\\actions\\game\\getState.js'),
+    selectCandidate: require('..\\actions\\player\\selectCandidate.js'),
+    sendCandidates: require('..\\actions\\player\\sendCandidates.js'),
+    playerRequestVote: require('..\\actions\\player\\playerRequestVote.js'),
+    playerRequestCompleteMission: require('..\\actions\\player\\playerRequestCompleteMission.js'),
+    playerCompleteMission: require('..\\actions\\player\\playerCompleteMission.js'),
+    playerVote: require('..\\actions\\player\\playerVote.js'),
+    playerRequestReady: require('..\\actions\\player\\playerRequestReady.js'),
+    playerReady: require('..\\actions\\player\\playerReady.js'),
+    getSettings: require('..\\actions\\game\\getSettings.js'),
+    selectLeader: require('..\\actions\\game\\selectLeader.js'),
+    enterVote: require('..\\actions\\game\\enterVote.js'),
+    getPlayerVotes: require('..\\actions\\player\\getPlayerVotes.js'),
+    enterMission: require('..\\actions\\game\\enterMission.js'),
+    missionComplete: require('..\\actions\\game\\missionComplete.js'),
+    gameOver: require('..\\actions\\game\\gameOver.js'),
+    playerSetData: require('..\\actions\\player\\playerSetData.js'),
+    playerGetData: require('..\\actions\\player\\playerGetData.js'),
+    playerSentCandidate: require('..\\actions\\player\\playerSentCandidate.js'),
+    playerSentComplete: require('..\\actions\\player\\playerSentComplete.js'),
+    playerSentReady: require('..\\actions\\player\\playerSentReady.js'),
+    playerSentVote: require('..\\actions\\player\\playerSentVote.js')
   };
   const actionMap = { actions: bindActionCreators(actions, dispatch) };
   return actionMap;

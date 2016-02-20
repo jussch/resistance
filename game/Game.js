@@ -134,13 +134,14 @@ Game.prototype.enterPhaseInitial = function() {
   this.getPhaseData('INITIAL').set('numOfPlayers', numOfPlayers);
   this.settings = gameSettings(numOfPlayers);
   this.emit('game:settings', this.settings);
+  this.emit('player:get:data', { players: this.players.getNicknames() });
+
   const spies = this.players.selectRandom(this.settings.numOfSpies).each((player) => {
     player.setIsSpy();
   });
 
   const spyNames = spies.getNicknames();
-
-  spies.emit('player:set:data', { spy: true, spies: spyNames });
+  spies.emit('player:set:data', { spy: true, players: spyNames });
 };
 
 Game.prototype.readyPlayer = function(player) {
@@ -149,6 +150,7 @@ Game.prototype.readyPlayer = function(player) {
   player.setIsReady();
   const phaseData = this.getPhaseData('INITIAL');
   phaseData.increment('playersReady');
+  this.emit('player:ready', { player: player.nickname });
   if (phaseData.get('playersReady') === phaseData.get('numOfPlayers')) {
     this.enterPhase('pick');
   }
