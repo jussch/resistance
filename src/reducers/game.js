@@ -14,7 +14,7 @@ const initialState = {
   phase: 'lobby',
   leader: null,
   currentRound: 0,
-  wins: [],
+  missions: [],
   winner: null,
 };
 
@@ -29,6 +29,15 @@ module.exports = function(state = initialState, action) {
     } break;
     case 'CANCEL': {
       nextState.requestCancel = true;
+      return nextState;
+    } break;
+    case 'RECEIVED_REMATCH': {
+      nextState.started = true;
+      nextState.phase = 'lobby';
+      nextState.winner = null;
+      nextState.currentRound = 0;
+      nextState.missions = [];
+      nextState.leader = null;
       return nextState;
     } break;
     case 'ENTER_MISSION': {
@@ -49,7 +58,10 @@ module.exports = function(state = initialState, action) {
       return nextState;
     } break;
     case 'MISSION_COMPLETE': {
-      nextState.wins.push(action.parameter.winner);
+      nextState.missions.push({
+        winner: action.parameter.winner,
+        sabotages: action.parameter.sabotages
+      });
       return nextState;
     } break;
     // aka. ENTER_PICK

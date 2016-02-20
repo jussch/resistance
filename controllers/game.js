@@ -55,6 +55,12 @@ module.exports = function LobbyControllers(io, socket) {
     game.playerCompleteMission(socket, data.success);
   });
 
+  socket.on('player:request:rematch', data => {
+    const game = games[socket.gameRoom];
+    socketLog('player:request:rematch');
+    game.initiateRematch();
+  });
+
   function initializeGame(room) {
     return games[room] || (games[room] = new Game(io, room));
   }

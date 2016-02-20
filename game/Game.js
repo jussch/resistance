@@ -37,8 +37,8 @@ Game.prototype.initializePhaseData = function() {
     GENERAL: new PhaseData({ spyWins: 0, resistanceWins: 0 }),
     INITIAL: new PhaseData({ numOfPlayers: 0, playersReady: 0 }),
     PICK: new PhaseData({ previousLeaders: [] }),
-    VOTE: new PhaseData({ voted: {}, passed: [], failed: [], candidates: null }),
-    MISSION: new PhaseData({ successes: 0, sabotages: 0, candidates: null, left: 0 }),
+    VOTE: new PhaseData({ voted: {}, passed: [], failed: [], candidates: null, left: 0 }),
+    MISSION: new PhaseData({ successes: 0, sabotages: 0, candidates: null, left: 0, completed: {} }),
     END: new PhaseData(),
   });
 };
@@ -195,7 +195,10 @@ Game.prototype.enterPhaseVote = function(options) {
   options = options || {};
   const candidates = options.candidates;
 
-  this.getPhaseData('VOTE').clear().set('candidates', candidates);
+  this.getPhaseData('VOTE').clear()
+    .set('candidates', candidates)
+    .set('left', this.players.getSize());
+
   this.emit('game:enter:vote', { candidates: candidates.getNicknames() });
 };
 
@@ -210,11 +213,13 @@ Game.prototype.playerVote = function(player, passVote) {
 
   phaseData.extend('voted', { [player.id]: player });
   phaseData.add(passVote ? 'passed' : 'failed', player.nickname);
+  phaseData.decrement('left');
 
   this.log('received player vote:', player.nickname);
+  this.log('votes remaining:', phaseData.get('left'));
   this.emit('player:voted', { player: player.nickname });
 
-  if (_.size(voted) === this.players.getSize()) {
+  if (!phaseData.get('left')) {
     this.endPhaseVote();
   }
 };
@@ -254,6 +259,11 @@ Game.prototype.playerCompleteMission = function(player, isSuccess) {
   if (!this.isPhase('MISSION')) return;
   player = this.getPlayer(player);
   const phaseData = this.getPhaseData('MISSION');
+  const completed = phaseData.get('completed');
+
+  if (completed[player.id]) return;
+
+  phaseData.extend('completed', { [player.id]: player });
 
   phaseData.increment(isSuccess ? 'successes' : 'sabotages');
   phaseData.decrement('left');
@@ -281,17 +291,28 @@ Game.prototype.endPhaseMission = function() {
     this.log(field, 'is above 3.', winner, 'wins the game.');
     this.enterPhase('END', { winner });
   } else {
-    this.emit('game:mission:complete', { winner });
+    this.emit('game:mission:complete', {
+      winner,
+      sabotages: phaseData.get('sabotages')
+    });
+
     this.enterPhase('PICK');
   }
 };
 
 Game.prototype.enterPhaseEnd = function(options) {
   options = options || {};
-  const winner = options.candidates;
+  const winner = options.winner;
 
   this.log('game over.');
   this.emit('game:end', { winner });
+};
+
+Game.prototype.initiateRematch = function() {
+  this.phase = 'LOBBY';
+  this.initializePhaseData();
+  this.emit('game:rematch');
+  this.enterPhase('INITIAL');
 };
 
 module.exports = Game;

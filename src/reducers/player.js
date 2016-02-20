@@ -11,6 +11,7 @@ const initialState = {
   requestCompleteMission: false,
   requestVote: false,
   requestReady: false,
+  requestRematch: false,
   requestCandidates: false,
   nickname: null,
   isCurrentLeader: false,
@@ -52,7 +53,22 @@ module.exports = function(state = initialState, action) {
 
       return nextState;
     } break;
-    case 'PLAYER_REQUEST_COMPLETE': {
+    case 'REQUEST_REMATCH': {
+      nextState.requestRematch = true;
+      return nextState;
+    } break;
+    case 'SENT_REMATCH': {
+      nextState.requestRematch = false;
+      return nextState;
+    } break;
+    case 'RECEIVED_REMATCH': {
+      nextState.spy = false;
+      nextState.ready = false;
+      nextState.voted = false;
+      nextState.completedMission = false;
+      return nextState;
+    } break;
+    case 'PLAYER_REQUEST_COMPLETE_MISSION': {
       nextState.missionSuccess = action.parameter.success;
       nextState.requestCompleteMission = true;
       nextState.isOnMission = false;
@@ -88,6 +104,7 @@ module.exports = function(state = initialState, action) {
     case 'PLAYER_SENT_CANDIDATE': {
       nextState.selectedCandidates = [];
       nextState.requestCandidates = false;
+      nextState.isCurrentLeader = false;
       return nextState;
     } break;
     case 'SELECT_LEADER': {

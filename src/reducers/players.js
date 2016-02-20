@@ -26,6 +26,23 @@ module.exports = function(state = {}, action) {
   let nextState = _.cloneDeep(state);
 
   switch(action.type) {
+    case 'RECEIVED_REMATCH': {
+      _.each(nextState, (player) => {
+        player.spy = null;
+        player.ready = false;
+        player.voted = false;
+        player.completedMission = false;
+        player.votes = [];
+        player.missionsFailed = 1;
+        player.missionCount = 0;
+        player.wasLeader = false;
+        player.isCandidate = false;
+        player.isLeader = false;
+        player.isSelected = false;
+      });
+
+      return nextState;
+    } break;
     case 'SELECT_CANDIDATE': {
       nextState[action.parameter.candidate].isSelected = !nextState[action.parameter.candidate].isSelected;
       return nextState;
@@ -62,7 +79,6 @@ module.exports = function(state = {}, action) {
       return nextState;
     } break;
     case 'PLAYER_SET_DATA': {
-      console.log('action.parameter of players', action.parameter);
       _.each(action.parameter.players, (playerName) => {
         _.extend(nextState[playerName], _.omit(action.parameter, 'players'));
       });

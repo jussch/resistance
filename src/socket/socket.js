@@ -23,8 +23,10 @@ const playerGetData = require('../actions/player/playerGetData');
 const playerSetData = require('../actions/player/playerSetData');
 const playerReady = require('../actions/player/playerReady');
 const playerVote = require('../actions/player/playerVote');
+const rematchReceived = require('../actions/player/receivedRematch');
 
 const playerSentCandidate = require('../actions/player/playerSentCandidate');
+const playerSentRematch = require('../actions/player/sentRematch');
 const playerSentComplete = require('../actions/player/playerSentComplete');
 const playerSentReady = require('../actions/player/playerSentReady');
 const playerSentVote = require('../actions/player/playerSentVote');
@@ -46,6 +48,7 @@ module.exports = function connect(store) {
   socket.on('game:settings', data => store.dispatch(gameGetSettings(data)));
   socket.on('game:mission:complete', data => store.dispatch(gameMissionComplete(data)));
   socket.on('game:select:leader', data => store.dispatch(gameSelectLeader(data)));
+  socket.on('game:rematch', data => store.dispatch(rematchReceived(data)));
 
   socket.on('player:votes', data => store.dispatch(playerGetVotes(data)));
   socket.on('player:finished:mission', data => store.dispatch(playerCompleteMission(data)));
@@ -97,6 +100,11 @@ module.exports = function connect(store) {
       if (player.requestCandidates) {
         socket.emit('player:select:candidates', { candidates: player.selectedCandidates });
         store.dispatch(playerSentCandidate());
+      }
+
+      if (player.requestRematch) {
+        socket.emit('player:request:rematch');
+        store.dispatch(playerSentRematch());
       }
     }
   });

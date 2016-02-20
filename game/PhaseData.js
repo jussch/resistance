@@ -34,7 +34,7 @@ PhaseData.prototype.increment = function(name) {
 };
 
 PhaseData.prototype.decrement = function(name) {
-  this.data[name]++;
+  this.data[name]--;
   return this;
 };
 
