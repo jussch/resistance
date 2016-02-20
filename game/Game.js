@@ -130,6 +130,7 @@ Game.prototype.enterPhase = function(phase) {
 
 Game.prototype.enterPhaseInitial = function() {
   this.started = true;
+  this.currentOrd = 0;
   this.players.generateOrder();
 
   const numOfPlayers = this.players.getSize();
