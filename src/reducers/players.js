@@ -5,9 +5,10 @@
  */
 const _ = require('lodash');
 
-function initialPlayer(nickname) {
+function initialPlayer(player) {
   return {
-    nickname,
+    nickname: player.nickname,
+    ord: player.ord,
     spy: null,
     ready: false,
     voted: false,
@@ -72,15 +73,15 @@ module.exports = function(state = {}, action) {
     } break;
     case 'PLAYER_GET_DATA': {
       nextState = {};
-      _.each(action.parameter.players, (playerName) => {
-        nextState[playerName] = initialPlayer(playerName);
+      _.each(action.parameter.players, (player) => {
+        nextState[player.nickname] = initialPlayer(player);
       });
 
       return nextState;
     } break;
     case 'PLAYER_SET_DATA': {
-      _.each(action.parameter.players, (playerName) => {
-        _.extend(nextState[playerName], _.omit(action.parameter, 'players'));
+      _.each(action.parameter.players, (player) => {
+        _.extend(nextState[player.nickname], player);
       });
 
       return nextState;

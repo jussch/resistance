@@ -10,6 +10,7 @@ function Player(socket) {
   this.nickname = socket.nickname;
   this.isSpy = false;
   this.isReady = false;
+  this.ord = null;
 }
 
 Player.prototype.emit = function(event, data) {

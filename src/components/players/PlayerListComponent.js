@@ -8,11 +8,11 @@ require('styles/players/PlayerList.scss');
 
 class PlayerListComponent extends React.Component {
   render() {
-    const {players} = this.props;
+    const players = _.sortBy(this.props.players, 'ord');
     return (
-      <ul className="playerlist-component">
+      <ol className="playerlist-component">
         {_.map(players, (player, key) => (<PlayerListItemComponent player={player} key={key}/>))}
-      </ul>
+      </ol>
     );
   }
 }

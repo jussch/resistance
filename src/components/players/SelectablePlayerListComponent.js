@@ -8,16 +8,17 @@ require('styles/players/SelectablePlayerList.scss');
 
 class SelectablePlayerListComponent extends React.Component {
   render() {
+    const players = _.sortBy(this.props.players, 'ord');
     return (
-      <ul className="selectableplayerlist-component">
-        {_.map(this.props.players, (p, k) => {
+      <ol className="selectableplayerlist-component">
+        {_.map(players, (p, k) => {
           return <SelectablePlayerListItemComponent
             player={p}
             onSelect={this.props.onSelect}
             key={k}
           />
         })}
-      </ul>
+      </ol>
     );
   }
 }

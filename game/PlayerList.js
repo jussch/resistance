@@ -60,13 +60,34 @@ PlayerList.prototype.selectRandom = function() {
   return _.sample(this.list);
 };
 
-PlayerList.prototype.filter = function(pred) {
-  return PlayerList.fromArray(_.filter(this.list, pred));
+PlayerList.prototype.filter = function(predicate) {
+  return PlayerList.fromArray(_.filter(this.list, predicate));
 };
 
 PlayerList.prototype.each = function(callback) {
   _.each(this.list, callback);
   return this;
+};
+
+PlayerList.prototype.map = function(callback) {
+  return _.map(this.list, callback);
+};
+
+PlayerList.prototype.find = function(predicate) {
+  return _.find(this.list, predicate);
+};
+
+PlayerList.prototype.generateOrder = function() {
+  var ordArray = _.chain(this.getSize()).range().shuffle().value();
+  console.log('ordArray', ordArray);
+
+  let i = 0;
+  this.each((player)=> {
+    player.ord = ordArray[i];
+    i++;
+  });
+
+  console.log('generatedOrder:', _.map(this.list, 'ord'));
 };
 
 module.exports = PlayerList;

@@ -24,6 +24,7 @@ function Game(io, room) {
   this.countDownInterval = null;
   this.phase = 'LOBBY';
   this.round = 0;
+  this.currentOrd = 0;
 
   this.initializePhaseData();
 }
@@ -129,13 +130,22 @@ Game.prototype.enterPhase = function(phase) {
 
 Game.prototype.enterPhaseInitial = function() {
   this.started = true;
-  this.emit('game:initialize');
+  this.players.generateOrder();
 
   const numOfPlayers = this.players.getSize();
   this.getPhaseData('INITIAL').set('numOfPlayers', numOfPlayers);
   this.settings = gameSettings(numOfPlayers);
+
   this.emit('game:settings', this.settings);
-  this.emit('player:get:data', { players: this.players.getNicknames() });
+
+  this.emit('player:get:data', {
+    players: this.players.map(player => {
+      return {
+        nickname: player.nickname,
+        ord: player.ord,
+      };
+    }),
+  });
 
   const spies = this.players.selectRandomList(this.settings.numOfSpies).each((player) => {
     player.setIsSpy();
@@ -143,7 +153,13 @@ Game.prototype.enterPhaseInitial = function() {
 
   const spyNames = spies.getNicknames();
   this.log('The spies of this match are:', spyNames);
-  spies.emit('player:set:data', { spy: true, players: spyNames });
+  spies.emit('player:set:data', {
+    players: _.map(spyNames, name => {
+      return { spy: true, nickname: name};
+    }),
+  });
+
+  this.emit('game:initialize');
 };
 
 Game.prototype.readyPlayer = function(player) {
@@ -172,7 +188,13 @@ Game.prototype.enterPhasePick = function() {
     return;
   }
 
-  const leader = potentialLeaders.selectRandom(1);
+  const numOfPlayers = this.players.getSize();
+  let leader;
+  do {
+    leader = potentialLeaders.find({ ord: this.currentOrd });
+    this.currentOrd = (this.currentOrd + 1) % numOfPlayers;
+  } while (!leader);
+
   phaseData.add('previousLeaders', leader);
 
   this.log('Electing leader:', leader.nickname);

@@ -13,8 +13,8 @@ class UsersComponent extends React.Component {
     if (this.props.users.requestRoom || !room || !nickname) return;
 
     this.props.actions.access({
-      room: room,
-      nickname: nickname,
+      room: room.toUpperCase(),
+      nickname: nickname.toUpperCase(),
     });
   }
   render() {
@@ -24,9 +24,9 @@ class UsersComponent extends React.Component {
         Join a room.
         <form onSubmit={this.handleSubmit.bind(this)}>
           <label htmlFor="nickname">Nickname</label>
-          <input type="text" id="nickname" name="nickname" disabled={!!users.requestRoom}/>
+          <input type="text" id="nickname" name="nickname" maxLength="12" style={{textTransform: 'uppercase'}} disabled={!!users.requestRoom}/>
           <label htmlFor="room">Room</label>
-          <input type="text" id="room" name="room" disabled={!!users.requestRoom}/>
+          <input type="text" id="room" name="room" maxLength="6" style={{textTransform: 'uppercase'}} disabled={!!users.requestRoom}/>
           <button role="submit" disabled={!!users.requestRoom}>Enter Game</button>
         </form>
       </div>

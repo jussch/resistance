@@ -128,8 +128,9 @@ module.exports = function(state = initialState, action) {
       return nextState;
     } break;
     case 'PLAYER_SET_DATA': {
-      if (_.includes(action.parameter.players, nextState.nickname)) {
-        _.extend(nextState, _.omit(action.parameter, 'players'));
+      const me = _.find(action.parameter.players, { nickname: nextState.nickname });
+      if (me) {
+        _.extend(nextState, me);
       }
 
       return nextState;
