@@ -77,8 +77,7 @@ module.exports = function(state = initialState, action) {
       return nextState;
     } break;
     case 'GET_STATE': {
-      Object.assign(nextState, action.parameter.game);
-      console.info('got state:', action.parameter.game);
+      _.extend(nextState, action.parameter.game);
       return nextState;
     } break;
     default: {
