@@ -116,7 +116,6 @@ module.exports = function(state = {}, action) {
       _.each(nextState, (player) => {
         player.isLeader = false;
         player.wasLeader = false;
-        console.log('setting', player.nickname, 'to', player.isLeader);
       });
 
       return nextState;

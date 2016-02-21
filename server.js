@@ -20,20 +20,23 @@ const express = require('express');
 const path = require('path');
 const open = require('open');
 
-const webpack = require('webpack');
-const webpackConfig = require('./webpack.config');
-const compiler = webpack(webpackConfig);
-
 // Create the app, setup the webpack middleware
 const app = express();
-app.use(require('webpack-dev-middleware')(compiler, webpackConfig.devServer));
-app.use(require('webpack-hot-middleware')(compiler));
 
-// You probably have other paths here
-//app.use(express.static('dist'));
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '/src/index.html'));
-});
+if (process.NODE_ENV !== 'production') {
+  const webpack = require('webpack');
+  const webpackConfig = require('./webpack.config');
+  const compiler = webpack(webpackConfig);
+  app.use(require('webpack-dev-middleware')(compiler, webpackConfig.devServer));
+  app.use(require('webpack-hot-middleware')(compiler));
+
+  // You probably have other paths here
+  app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '/src/index.html'));
+  });
+} else {
+  app.use(express.static(path.join(__dirname, 'dist/')));
+}
 
 const server = new http.Server(app);
 const io = require('socket.io')(server);
