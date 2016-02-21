@@ -46,7 +46,7 @@ require('./controllers/base')(io);
 
 const PORT = process.env.PORT || webpackConfig.port;
 
-server.listen(PORT, 'localhost', function(err) {
+server.listen(PORT, function(err) {
   if (err) {
     console.log(err);
   }
