@@ -18,7 +18,6 @@ require('core-js/fn/object/assign');
 const http = require('http');
 const express = require('express');
 const path = require('path');
-const open = require('open');
 
 // Create the app, setup the webpack middleware
 const app = express();
