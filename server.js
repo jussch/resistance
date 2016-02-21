@@ -23,6 +23,7 @@ const path = require('path');
 const app = express();
 
 if (process.env.NODE_ENV !== 'production') {
+  console.log('Loading webpack...');
   const webpack = require('webpack');
   const webpackConfig = require('./webpack.config');
   const compiler = webpack(webpackConfig);
@@ -34,6 +35,7 @@ if (process.env.NODE_ENV !== 'production') {
     res.sendFile(path.join(__dirname, '/src/index.html'));
   });
 } else {
+  console.log('Serving Static...');
   app.use(express.static(path.join(__dirname, 'dist/')));
 }
 
