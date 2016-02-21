@@ -43,7 +43,7 @@ class PickPhaseComponent extends React.Component {
         <div className="pickphase-component">
           <h1>You are the <strong className="leader-text">leader</strong>.</h1>
           <div>Select the {numPlayers} players you want to send on a mission.</div>
-          <div>The spies need to <span className="spy-text">sabotage</span> this mission <b>{failsNeeded}</b> to score a point.</div>
+          <div>The spies need to <span className="spy-text">sabotage</span> this mission <b>{failsNeeded}</b> to take this round.</div>
           <SelectablePlayerListComponent {...this.props} onSelect={this.onSelect.bind(this)} playersLeft={playersLeft} />
           <div className="button-group">
             <span className="button-group-addon">

@@ -1,8 +1,12 @@
 @import '../colors';
 .playerlistitem-component {
   position: relative;
-  .wasleader-icon {
+  .left-side {
     position: absolute;
     left: 5px;
+  }
+  .right-side {
+    position: absolute;
+    right: 5px;
   }
 }

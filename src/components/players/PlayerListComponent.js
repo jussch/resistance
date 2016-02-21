@@ -14,6 +14,7 @@ class PlayerListComponent extends React.Component {
 
   render() {
     const players = _.sortBy(this.props.players, 'ord');
+    const phase = this.props.phase;
     return (
       <ol className="playerlist-component user-list">
         {_.map(players, (player, key) => {
@@ -21,6 +22,7 @@ class PlayerListComponent extends React.Component {
             player={player}
             key={key}
             isCurrent={this.isCurrentPlayer(player)}
+            phase={phase}
           />
         })}
       </ol>

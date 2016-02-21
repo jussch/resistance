@@ -104,8 +104,8 @@ module.exports = function(state = initialState, action) {
       nextState.missions[state.currentRound].suggestedTeams.push(createTeam({
         leader: state.currentLeader,
         players: _.clone(state.currentCandidates),
-        passes: action.parameter.passes,
-        rejections: action.parameter.fails,
+        passes: action.parameter.passed,
+        rejections: action.parameter.failed,
       }));
 
       return nextState;

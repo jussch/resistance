@@ -10,6 +10,7 @@ import VotePhaseComponent from './game/VotePhaseComponent';
 import MissionPhaseComponent from './game/MissionPhaseComponent';
 import EndPhaseComponent from './game/EndPhaseComponent';
 import MissionDetailsListComponent from './game/MissionDetailsListComponent';
+import FlashReportComponent from './game/FlashReportComponent';
 
 require('styles//Game.scss');
 
@@ -19,10 +20,12 @@ class GameComponent extends React.Component {
 
     let listComp;
     let missionDetails;
+    let missionReport;
     if (!game.started) {
       listComp = <ListComponent list={users.list}/>;
     } else {
-      listComp = <PlayerListComponent players={players} player={player}/>;
+      listComp = <PlayerListComponent players={players} player={player} phase={game.phase}/>;
+      missionReport = <FlashReportComponent game={game}/>;
       missionDetails = <MissionDetailsListComponent {...this.props}/>;
     }
 
@@ -44,6 +47,7 @@ class GameComponent extends React.Component {
     return (
       <div className="game-component">
         {listComp}
+        {missionReport}
         {gameStateComp}
         {missionDetails}
       </div>

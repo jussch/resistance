@@ -261,9 +261,11 @@ Game.prototype.endPhaseVote = function() {
   const phaseData = this.getPhaseData('VOTE');
   const passed = phaseData.get('passed');
   const failed = phaseData.get('failed');
+  console.log('passed:', passed);
+  console.log('failed:', failed);
   this.emit('player:votes', {
-    passed,
-    failed,
+    passed: passed,
+    failed: failed,
   });
 
   if (passed.length >= failed.length) {
@@ -349,6 +351,8 @@ Game.prototype.enterPhaseEnd = function(options) {
 
 Game.prototype.initiateRematch = function() {
   this.phase = 'LOBBY';
+  this.round = 0;
+  this.currentOrd = 0;
   this.initializePhaseData();
   this.emit('game:rematch');
   this.enterPhase('INITIAL');
