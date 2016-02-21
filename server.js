@@ -22,6 +22,11 @@ const path = require('path');
 // Create the app, setup the webpack middleware
 const app = express();
 
+// You probably have other paths here
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '/src/index.html'));
+});
+
 if (process.env.NODE_ENV !== 'production') {
   console.log('Loading webpack...');
   const webpack = require('webpack');
@@ -29,14 +34,9 @@ if (process.env.NODE_ENV !== 'production') {
   const compiler = webpack(webpackConfig);
   app.use(require('webpack-dev-middleware')(compiler, webpackConfig.devServer));
   app.use(require('webpack-hot-middleware')(compiler));
-
-  // You probably have other paths here
-  app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '/src/index.html'));
-  });
 } else {
   console.log('Serving Static...');
-  app.use(express.static(path.join(__dirname, 'dist/')));
+  app.use('/assets', express.static(path.join(__dirname, 'dist/assets')));
 }
 
 const server = new http.Server(app);
