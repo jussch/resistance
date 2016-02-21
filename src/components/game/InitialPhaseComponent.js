@@ -26,20 +26,20 @@ class InitialPhaseComponent extends React.Component {
       affiliation = 'spies';
       let teammates = _.chain(players)
         .filter(p => p.spy && p.nickname !== player.nickname)
-        .map((p, key) => <PlayerComponent player={p} key={key}/>)
+        .map((p, key) => (<PlayerComponent player={p} key={key}/>))
         .value();
 
-      teammatesString = `Your teammate${teammates.length ? 's are' : ' is'} ${teammates}`;
+      teammatesString = <div>Your teammate{teammates.length ? 's are' : ' is'} {teammates}.</div>;
     } else {
       title = <h1 className="res-text">Resistance</h1>;
       affiliation = 'resistance';
-      teammatesString = 'You don\'t know who you teammates are';
+      teammatesString = 'You don\'t know who you teammates are.';
     }
 
     return (
       <div className="initialphase-component">
         {title}
-        You are apart of the {affiliation}. {teammatesString}.
+        You are apart of the {affiliation}. {teammatesString}
         <button className="button" onClick={this.handleClick.bind(this)}>Got it.</button>
       </div>
     );

@@ -7,9 +7,9 @@ const _ = require('lodash');
 const initialState = [];
 function createError(data) {
   return {
+    id: data.id,
     message: data.message,
-    expires: Date.now() + 2000,
-  }
+  };
 }
 
 module.exports = function(state = initialState, action) {
@@ -20,8 +20,14 @@ module.exports = function(state = initialState, action) {
       nextState.push(createError(action.parameter));
       return nextState;
     } break;
+    case 'EXPIRE_ERROR': {
+      const id = action.parameter.id;
+      nextState = _.reject(nextState, errorObj => errorObj.id === id);
+
+      return nextState;
+    } break;
     default: {
       return state;
     }
   }
-}
+};

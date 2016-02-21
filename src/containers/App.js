@@ -37,7 +37,7 @@ App.propTypes = {
   game: PropTypes.object.isRequired,
   player: PropTypes.object.isRequired,
   players: PropTypes.object.isRequired,
-  errors: PropTypes.object.isRequired
+  errors: PropTypes.array.isRequired
 };
 function mapStateToProps(state) {
   /* Populated by react-webpack-redux:reducer */
@@ -88,7 +88,11 @@ function mapDispatchToProps(dispatch) {
     receivedRematch: require('..\\actions\\player\\receivedRematch.js'),
     sentRematch: require('..\\actions\\player\\sentRematch.js'),
     accessSent: require('..\\actions\\users\\accessSent.js'),
-    getError: require('..\\actions\\getError.js')
+    getError: require('..\\actions\\getError.js'),
+    expireError: require('..\\actions\\expireError.js'),
+    handleError: require('..\\actions\\handleError.js'),
+    startSent: require('..\\actions\\game\\startSent.js'),
+    cancelSent: require('..\\actions\\game\\cancelSent.js')
   };
   const actionMap = { actions: bindActionCreators(actions, dispatch) };
   return actionMap;

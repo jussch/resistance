@@ -52,12 +52,19 @@ module.exports = function(state = initialState, action) {
       nextState.requestStart = true;
       return nextState;
     } break;
+    case 'START_SENT': {
+      nextState.requestStart = false;
+      return nextState;
+    } break;
     case 'CANCEL': {
       nextState.requestCancel = true;
       return nextState;
     } break;
+    case 'CANCEL_SENT': {
+      nextState.requestCancel = false;
+      return nextState;
+    } break;
     case 'RECEIVED_REMATCH': {
-      console.log('received rematch!!!!!');
       nextState.started = true;
       nextState.phase = 'lobby';
       nextState.winner = null;
@@ -114,6 +121,7 @@ module.exports = function(state = initialState, action) {
     // aka. ENTER_PICK
     case 'SELECT_LEADER': {
       nextState.phase = 'pick';
+      nextState.currentCandidates = [];
       nextState.currentRound = action.parameter.round;
       nextState.currentLeader = action.parameter.leader;
       return nextState;
@@ -121,7 +129,6 @@ module.exports = function(state = initialState, action) {
     case 'COUNTDOWN': {
       nextState.countDown = action.parameter.countDown;
       nextState.starting = true;
-      nextState.requestStart = false;
       return nextState;
     } break;
     case 'INITIALIZE': {
@@ -131,7 +138,6 @@ module.exports = function(state = initialState, action) {
       return nextState;
     } break;
     case 'STOP': {
-      nextState.requestCancel = false;
       nextState.countDown = null;
       nextState.starting = false;
       return nextState;

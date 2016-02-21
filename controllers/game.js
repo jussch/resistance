@@ -9,15 +9,16 @@ const Util = require('./utilities');
 const gameSettings = require('./../game/config');
 const Game = require('./../game/Game');
 
-// TODO: Restrict access to rooms that have already started.
-
 module.exports = function LobbyControllers(io, socket) {
   socket.on('game:start', data => {
     const room = socket.gameRoom;
-    const game = initializeGame(room);
+    const game = initializeGame(io, room);
     const users = Util.getUsers(io, room);
     socketLog('game:start');
-    if (!gameSettings(users.length)) return;
+    if (!gameSettings(users.length)) {
+      socket.emit('error:message', { message: 'Cannot start game, not enough players.' });
+      return;
+    }
 
     game.startInitialCountdown(() => {
       game.setPlayers(Util.getUsers(io, room));
@@ -68,13 +69,6 @@ module.exports = function LobbyControllers(io, socket) {
     }
   });
 
-  function initializeGame(room) {
-    return games[room] || (games[room] = new Game(io, room, () => {
-      console.log('Destroy game:', room);
-      games[room] = null;
-    }));
-  }
-
   function socketLog() {
     console.log.apply(console, [socket.nickname, 'requests:'].concat(_.toArray(arguments)));
   }
@@ -95,18 +89,25 @@ module.exports.canJoinGame = function(socket, room) {
   }
 
   // TODO: Detect Player Count
-  return !game || !game.started || !game.starting;
+  return !game || !game.started || !game.starting || game.players.getSize() >= gameSettings.MAX_PLAYERS;
 };
 
 /**
  * Sends the info to the socket giving them the current game info.
+ * @param io
  * @param socket
  * @param room
  */
-module.exports.socketJoinsGame = function(socket, room) {
-  const game = games[room];
-  console.log(socket.nickname, 'joins the game', room, '. Game Initialized:', !!game);
-  if (!game) return;
-
+module.exports.socketJoinsGame = function(io, socket, room) {
+  const game = initializeGame(io, room);
+  game.addPlayer(socket);
   socket.emit('game:get:state', { game: game.getState() });
+  console.log(socket.nickname, `joins the game ${room}.`);
 };
+
+function initializeGame(io, room) {
+  return games[room] || (games[room] = new Game(io, room, () => {
+    console.log('Destroy game:', room);
+    games[room] = null;
+  }));
+}

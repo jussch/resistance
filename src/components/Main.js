@@ -9,13 +9,13 @@ import GameComponent from './GameComponent';
 
 class AppComponent extends Component {
   render() {
-    const {actions, users, game, players, player} = this.props;
+    const {actions, users, errors} = this.props;
 
     let mainComp;
     if (!this.props.users.room) {
-      mainComp = <UsersComponent users={users} actions={actions}/>;
+      mainComp = <UsersComponent users={users} actions={actions} errors={errors}/>;
     } else {
-      mainComp = <GameComponent users={users} actions={actions} game={game} players={players} player={player}/>;
+      mainComp = <GameComponent {...this.props}/>;
     }
 
     return (

@@ -16,7 +16,7 @@ module.exports = function UserControllers(io) {
     socket.on('users:access', (data) => {
       socket.nickname = data.nickname;
       if (!GameController.canJoinGame(socket, data.room)) {
-        socket.emit('error', { message: 'Cannot join that lobby.' });
+        socket.emit('error:message', { message: 'Cannot join that lobby.' });
         return;
       }
 
@@ -42,7 +42,7 @@ module.exports = function UserControllers(io) {
         socket.join(room);
         socket.emit('users:join', { room: room });
         fetchUsers(room);
-        GameController.socketJoinsGame(socket, room);
+        GameController.socketJoinsGame(io, socket, room);
       }
     }
   });

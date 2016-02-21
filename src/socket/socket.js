@@ -3,7 +3,7 @@
  */
 const io = require('socket.io-client');
 
-const getError = require('../actions/getError');
+const handleError = require('../actions/handleError');
 
 const userJoin = require('../actions/users/join');
 const userLeave = require('../actions/users/leave');
@@ -12,6 +12,8 @@ const userAccessSent = require('../actions/users/accessSent');
 
 const gameCountdown = require('../actions/game/countdown');
 const gameInitialize = require('../actions/game/initialize');
+const gameStartSent = require('../actions/game/startSent');
+const gameCancelSent = require('../actions/game/cancelSent');
 const gameStop = require('../actions/game/stop');
 const gameGetState = require('../actions/game/getState');
 const gameEnterMission = require('../actions/game/enterMission');
@@ -38,7 +40,8 @@ const playerSentVote = require('../actions/player/playerSentVote');
 module.exports = function connect(store) {
   var socket = io();
 
-  socket.on('error', data => store.dispatch(getError(data)));
+  socket.on('error', data => store.dispatch(handleError(data)));
+  socket.on('error:message', data => store.dispatch(handleError(data)));
 
   socket.on('users:join', data => store.dispatch(userJoin(data)));
   socket.on('users:leave', data => store.dispatch(userLeave(data)));
@@ -69,21 +72,22 @@ module.exports = function connect(store) {
     // User client-to-server actions
     if (state.users && state.users.requestRoom != null) {
       // Short circuit if given false to send null.
+      store.dispatch(userAccessSent());
       socket.emit('users:access', {
         room: state.users.requestRoom || null,
         nickname: state.users.myNickname,
       });
-
-      store.dispatch(userAccessSent());
     }
 
     // Game client-to-server actions
     if (state.game) {
       if (state.game.requestStart) {
+        store.dispatch(gameStartSent());
         socket.emit('game:start');
       }
 
       if (state.game.requestCancel) {
+        store.dispatch(gameCancelSent());
         socket.emit('game:cancel');
       }
     }
@@ -91,28 +95,28 @@ module.exports = function connect(store) {
     if (state.player) {
       const player = state.player;
       if (player.requestCompleteMission) {
-        socket.emit('player:complete:mission', { success: player.missionSuccess });
         store.dispatch(playerSentComplete());
+        socket.emit('player:complete:mission', { success: player.missionSuccess });
       }
 
       if (player.requestVote) {
-        socket.emit('player:vote', { pass: player.vote });
         store.dispatch(playerSentVote());
+        socket.emit('player:vote', { pass: player.vote });
       }
 
       if (player.requestReady) {
-        socket.emit('player:ready');
         store.dispatch(playerSentReady());
+        socket.emit('player:ready');
       }
 
       if (player.requestCandidates) {
-        socket.emit('player:select:candidates', { candidates: player.selectedCandidates });
         store.dispatch(playerSentCandidate());
+        socket.emit('player:select:candidates', { candidates: player.selectedCandidates });
       }
 
       if (player.requestRematch) {
-        socket.emit('player:request:rematch');
         store.dispatch(playerSentRematch());
+        socket.emit('player:request:rematch');
       }
     }
   });
