@@ -13,7 +13,7 @@ class MissionDetailsListItemComponent extends React.Component {
     if (this.props.isCurrent) className += ' is-current';
 
     return (
-      <li className="missiondetailslistitem-component">
+      <li className="missiondetailslistitem-component" onClick={this.props.onClick}>
         <div className={className}>
           <div className="mission-players-needed">{mission.playersNeeded}</div>
           <div className="mission-sabotages-needed">{mission.sabotagesNeeded}</div>

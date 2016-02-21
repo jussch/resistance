@@ -11,6 +11,7 @@ import MissionPhaseComponent from './game/MissionPhaseComponent';
 import EndPhaseComponent from './game/EndPhaseComponent';
 import MissionDetailsListComponent from './game/MissionDetailsListComponent';
 import FlashReportComponent from './game/FlashReportComponent';
+import ViewMissionComponent from './game/ViewMissionComponent';
 
 require('styles//Game.scss');
 
@@ -21,12 +22,16 @@ class GameComponent extends React.Component {
     let listComp;
     let missionDetails;
     let missionReport;
+    let viewMission;
     if (!game.started) {
       listComp = <ListComponent list={users.list}/>;
     } else {
       listComp = <PlayerListComponent players={players} player={player} phase={game.phase}/>;
       missionReport = <FlashReportComponent game={game}/>;
       missionDetails = <MissionDetailsListComponent {...this.props}/>;
+      if (player.viewingMission != null) {
+        viewMission = <ViewMissionComponent mission={game.missions[player.viewingMission]}/>
+      }
     }
 
     let gameStateComp;
@@ -50,6 +55,7 @@ class GameComponent extends React.Component {
         {missionReport}
         {gameStateComp}
         {missionDetails}
+        {viewMission}
       </div>
     );
   }

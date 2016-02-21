@@ -21,6 +21,7 @@ const initialState = {
 
 function createMission(initialData) {
   return {
+    missionNumber: initialData.missionNumber,
     playersNeeded: initialData.playersNeeded,
     sabotagesNeeded: initialData.sabotagesNeeded,
     report: {
@@ -93,6 +94,7 @@ module.exports = function(state = initialState, action) {
       nextState.settings = _.extend({}, action.parameter);
       _.times(5, (i) => {
         nextState.missions[i] = createMission({
+          missionNumber: i + 1,
           playersNeeded: nextState.settings.rounds[i],
           sabotagesNeeded: nextState.settings.fails[i],
         });

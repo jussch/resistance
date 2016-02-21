@@ -92,7 +92,8 @@ function mapDispatchToProps(dispatch) {
     expireError: require('..\\actions\\expireError.js'),
     handleError: require('..\\actions\\handleError.js'),
     startSent: require('..\\actions\\game\\startSent.js'),
-    cancelSent: require('..\\actions\\game\\cancelSent.js')
+    cancelSent: require('..\\actions\\game\\cancelSent.js'),
+    playerViewMission: require('..\\actions\\player\\playerViewMission.js')
   };
   const actionMap = { actions: bindActionCreators(actions, dispatch) };
   return actionMap;

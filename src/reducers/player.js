@@ -22,6 +22,8 @@ const initialState = {
   voted: false,
   completedMission: false,
 
+  viewingMission: null,
+
   lastAccessed: {
     nickname: null,
     room: null,
@@ -72,6 +74,7 @@ module.exports = function(state = initialState, action) {
       nextState.ready = false;
       nextState.voted = false;
       nextState.completedMission = false;
+      nextState.viewingMission = null;
       return nextState;
     } break;
     case 'PLAYER_REQUEST_COMPLETE_MISSION': {
@@ -130,6 +133,15 @@ module.exports = function(state = initialState, action) {
     } break;
     case 'ENTER_VOTE': {
       nextState.voted = false;
+
+      return nextState;
+    } break;
+    case 'PLAYER_VIEW_MISSION': {
+      if (nextState.viewingMission !== action.parameter.missionNumber) {
+        nextState.viewingMission = action.parameter.missionNumber;
+      } else {
+        nextState.viewingMission = null;
+      }
 
       return nextState;
     } break;
