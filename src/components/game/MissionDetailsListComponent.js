@@ -23,6 +23,7 @@ class MissionDetailsListComponent extends React.Component {
           return <MissionDetailsListItemComponent
             mission={mission}
             key={k}
+            isSelected={this.props.player.viewingMission === k}
             isCurrent={currentRound === k}
             onClick={this.viewMission(k)}
           />

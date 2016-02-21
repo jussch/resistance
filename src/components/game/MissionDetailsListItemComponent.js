@@ -12,11 +12,22 @@ class MissionDetailsListItemComponent extends React.Component {
     if (mission.report.winner === 'resistance') className += ' res-back';
     if (this.props.isCurrent) className += ' is-current';
 
+    let content;
+    if (!this.props.isSelected) {
+      content = [
+        <div className="mission-players-needed">{mission.playersNeeded}</div>,
+        <div className="mission-sabotages-needed">{mission.sabotagesNeeded}</div>
+      ];
+    } else {
+      content = <div className="mission-selected-arrow">
+        <i className="fa fa-arrow-down"/>
+      </div>
+    }
+
     return (
       <li className="missiondetailslistitem-component" onClick={this.props.onClick}>
         <div className={className}>
-          <div className="mission-players-needed">{mission.playersNeeded}</div>
-          <div className="mission-sabotages-needed">{mission.sabotagesNeeded}</div>
+          {content}
         </div>
       </li>
     );

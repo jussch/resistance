@@ -15,24 +15,26 @@ class ViewMissionComponent extends React.Component {
     if (mission.report.winner) {
       missionReport = <MissionReportComponent report={mission.report}/>
     } else {
-      missionReport = <strong>This mission has not been completed.</strong>
+      missionReport = <div className="empty">This mission has not been completed.</div>
     }
 
     let suggestions;
     if (mission.suggestedTeams.length) {
       suggestions = _.map(mission.suggestedTeams, (suggestion, k) => {
-        return <MissionReportComponent suggestion={suggestion} key={k}/>
+        return <SuggestionReportComponent suggestion={suggestion} key={k}/>
       });
     } else {
-      suggestions = <strong>This mission has not had any suggested teams yet.</strong>
+      suggestions = <div className="empty">This mission has not had any suggested teams yet.</div>
     }
 
     return (
       <div className="viewmission-component">
-        <h1>Mission {mission.missionNumber}</h1>
-        <h3>Report:</h3>
+        <h1>Mission {mission.missionNumber} Details</h1>
+        <div className="res-text">Players needed: {mission.playersNeeded}</div>
+        <div className="spy-text">Sabotages required for fail: {mission.sabotagesNeeded}</div>
+        <h3 className="header">Report:</h3>
         {missionReport}
-        <h3>Suggested Teams:</h3>
+        <h3 className="header">Suggested Teams:</h3>
         {suggestions}
       </div>
     );
