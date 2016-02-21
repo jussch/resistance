@@ -23,7 +23,7 @@ const open = require('open');
 // Create the app, setup the webpack middleware
 const app = express();
 
-if (process.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV !== 'production') {
   const webpack = require('webpack');
   const webpackConfig = require('./webpack.config');
   const compiler = webpack(webpackConfig);
