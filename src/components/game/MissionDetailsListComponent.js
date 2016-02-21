@@ -9,10 +9,15 @@ require('styles/game/MissionDetailsList.scss');
 class MissionDetailsListComponent extends React.Component {
   render() {
     const missions = this.props.game.missions;
+    const currentRound = this.props.game.currentRound;
     return (
       <ol className="missiondetailslist-component">
         {_.map(missions, (mission, k) => {
-          return <MissionDetailsListItemComponent mission={mission} key={k}/>
+          return <MissionDetailsListItemComponent
+            mission={mission}
+            key={k}
+            isCurrent={currentRound === k}
+          />
         })}
       </ol>
     );

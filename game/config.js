@@ -3,7 +3,7 @@
  */
 const settingsByPlayerCount = {
   // TEST
-  2: { numOfSpies: 1, rounds: [1,1,1,1,1], fails: [1,1,1,1,2] },
+  2: { numOfSpies: 1, rounds: [1,2,2,1,2], fails: [1,1,1,1,2] },
 
   5: { numOfSpies: 2, rounds: [2,3,2,3,3], fails: [1,1,1,1,1] },
   6: { numOfSpies: 2, rounds: [2,3,4,3,4], fails: [1,1,1,1,1] },

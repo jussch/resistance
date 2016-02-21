@@ -79,15 +79,12 @@ PlayerList.prototype.find = function(predicate) {
 
 PlayerList.prototype.generateOrder = function() {
   var ordArray = _.chain(this.getSize()).range().shuffle().value();
-  console.log('ordArray', ordArray);
 
   let i = 0;
   this.each((player)=> {
     player.ord = ordArray[i];
     i++;
   });
-
-  console.log('generatedOrder:', _.map(this.list, 'ord'));
 };
 
 module.exports = PlayerList;

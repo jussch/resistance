@@ -19,22 +19,26 @@ class VotePhaseComponent extends React.Component {
 
   render() {
     if (this.props.player.voted) {
-      return (<div className="votephase-component">Voted.</div>);
+      return (<div className="votephase-component"><h1>Voted</h1></div>);
     }
 
     const game = this.props.game;
     const candidates = _.filter(this.props.players, 'isCandidate');
-    const failsNeeded = game.settings.fails[game.currentRound] === 1 ? 'once' : 'twice';
+    const failsNeeded = game.settings.fails[game.currentRound];
     return (
       <div className="votephase-component">
-        The players up for the next mission: (fails needed: {failsNeeded})
+        The players up for the next mission: (sabotages needed for spy win: {failsNeeded})
         <PlayerListComponent players={candidates} />
-        <button onClick={this.handlePass.bind(this)}>
-          <i className="fa fa-check"> </i>
+        <button className="button" onClick={this.handlePass.bind(this)}>
+          <div className="button-img">
+            <i className="fa fa-check success-text"> </i>
+          </div>
           Pass
         </button>
-        <button onClick={this.handleReject.bind(this)}>
-          <i className="fa fa-times"> </i>
+        <button className="button" onClick={this.handleReject.bind(this)}>
+          <div className="button-img">
+            <i className="fa fa-times fail-text"> </i>
+          </div>
           Reject
         </button>
       </div>

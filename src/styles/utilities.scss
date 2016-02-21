@@ -2,6 +2,8 @@
 
 .button {
   display: block;
+  position: relative;
+  overflow: hidden;
   border: 1px solid $border-color;
   border-radius: $border-radius;
   padding: 2px 7px;
@@ -18,6 +20,27 @@
   &[disabled],
   &.disabled {
     background: #888;
+  }
+
+  h1 {
+    margin: 0;
+    padding: 0;
+  }
+  .disclaimer {
+    font-weight: 300;
+    font-style: italic;
+    color: #aaa;
+  }
+  .button-img {
+    position: absolute;
+    font-size: 120px;
+    left: 50%;
+    top: 45%;
+    transform: translate(-50%, -50%);
+    opacity: 0.2;
+  }
+  + .button {
+    margin-top: 10px;
   }
 }
 
@@ -45,12 +68,37 @@
   }
 }
 
+.success-text,
+.success-color {
+  color: $success-color;
+}
+
+.fail-text,
+.fail-color {
+  color: $fail-color;
+}
+
+.leader-text,
+.leader-color {
+  color: $leader-color;
+}
+
+.res-text,
 .res-color {
   color: $res-color;
 }
 
+.spy-text,
 .spy-color {
   color: $spy-color;
+}
+
+.res-back {
+  background-color: $res-color;
+}
+
+.spy-back {
+  background-color: $spy-color;
 }
 
 .user-list {
@@ -64,8 +112,8 @@
     list-style: none;
     border: 1px solid $border-color;
     border-radius: $border-radius;
-    max-width: 33%;
-    padding: 6px 12px;
+    min-width: 33%;
+    padding: 6px 30px;
     text-align: center;
   }
 }

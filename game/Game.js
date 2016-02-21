@@ -11,9 +11,10 @@ const PhaseData = require('./PhaseData');
 const gameAttrs = ['starting', 'started', 'countDown'];
 const gamePhases = ['LOBBY', 'INITIAL', 'PICK', 'VOTE', 'MISSION', 'END'];
 
-function Game(io, room) {
+function Game(io, room, destroyCallback) {
   this.io = io;
   this.room = room;
+  this.destroyCallback = destroyCallback;
 
   this.players = new PlayerList();
 
@@ -46,6 +47,15 @@ Game.prototype.initializePhaseData = function() {
 
 Game.prototype.getPhaseData = function(phase) {
   return this._phaseData.get(phase.toUpperCase());
+};
+
+Game.prototype.playerWithNicknameExists = function(nickname) {
+  return !!this.players.find({ nickname: nickname });
+};
+
+Game.prototype.addPlayer = function(player) {
+  this.players.add(player);
+  return this;
 };
 
 Game.prototype.setPlayers = function(players) {
@@ -271,7 +281,7 @@ Game.prototype.enterPhaseMission = function(options) {
   this.getPhaseData('PICK').clear();
   this.getPhaseData('MISSION').clear()
     .set('candidates', candidates)
-    .set('left', _.size(candidates));
+    .set('left', candidates.getSize());
 
   this.emit('game:enter:mission', {
     candidates: candidates.getNicknames(),
@@ -312,6 +322,12 @@ Game.prototype.endPhaseMission = function() {
   general.increment(field);
   if (general.get(field) >= 3) {
     this.log(field, 'is above 3.', winner, 'wins the game.');
+
+    this.emit('game:mission:complete', {
+      winner,
+      sabotages: phaseData.get('sabotages')
+    });
+
     this.enterPhase('END', { winner });
   } else {
     this.emit('game:mission:complete', {
@@ -336,6 +352,26 @@ Game.prototype.initiateRematch = function() {
   this.initializePhaseData();
   this.emit('game:rematch');
   this.enterPhase('INITIAL');
+};
+
+Game.prototype.playerDisconnected = function(socket) {
+  const player = this.getPlayer(socket);
+  player.disconnected = true;
+  this.log('Registered player left:', socket.id);
+
+  const disconnectedPlayers = this.players.filter('disconnected');
+  if (disconnectedPlayers.getSize() === this.players.getSize()) {
+    this.destroy();
+  }
+};
+
+Game.prototype.destroy = function() {
+  this.destroyCallback();
+  this.destroyCallback = null;
+  this.players = null;
+  this._phaseData = null;
+  this.io = null;
+  this.room = null;
 };
 
 module.exports = Game;

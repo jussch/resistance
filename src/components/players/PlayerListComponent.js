@@ -7,11 +7,22 @@ import PlayerListItemComponent from './PlayerListItemComponent';
 require('styles/players/PlayerList.scss');
 
 class PlayerListComponent extends React.Component {
+  isCurrentPlayer(player) {
+    const current = this.props.player;
+    return current && current.nickname === player.nickname;
+  }
+
   render() {
     const players = _.sortBy(this.props.players, 'ord');
     return (
-      <ol className="playerlist-component">
-        {_.map(players, (player, key) => (<PlayerListItemComponent player={player} key={key}/>))}
+      <ol className="playerlist-component user-list">
+        {_.map(players, (player, key) => {
+          return <PlayerListItemComponent
+            player={player}
+            key={key}
+            isCurrent={this.isCurrentPlayer(player)}
+          />
+        })}
       </ol>
     );
   }

@@ -1,3 +1,20 @@
+@import '../colors';
 .missiondetailslistitem-component {
-  border: 1px dashed #f00;
+  .mission-circle {
+    display: inline-block;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 1px solid $border-color;
+    padding: 5px;
+    &.is-current {
+      border-color: $text-color;
+    }
+    .mission-players-needed {
+      font-size: 24px;
+    }
+    .mission-sabotages-needed {
+      font-size: 12px;
+    }
+  }
 }

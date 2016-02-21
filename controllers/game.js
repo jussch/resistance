@@ -61,8 +61,18 @@ module.exports = function LobbyControllers(io, socket) {
     game.initiateRematch();
   });
 
+  socket.on('disconnect', () => {
+    const game = games[socket.gameRoom];
+    if (game) {
+      game.playerDisconnected(socket);
+    }
+  });
+
   function initializeGame(room) {
-    return games[room] || (games[room] = new Game(io, room));
+    return games[room] || (games[room] = new Game(io, room, () => {
+      console.log('Destroy game:', room);
+      games[room] = null;
+    }));
   }
 
   function socketLog() {
@@ -73,11 +83,16 @@ module.exports = function LobbyControllers(io, socket) {
 
 /**
  * Returns boolean representing if the game can be joined or not.
+ * @param socket
  * @param room
  * @returns {boolean}
  */
-module.exports.canJoinGame = function(room) {
+module.exports.canJoinGame = function(socket, room) {
   const game = games[room];
+
+  if (game && game.playerWithNicknameExists(socket.nickname)) {
+    return false;
+  }
 
   // TODO: Detect Player Count
   return !game || !game.started || !game.starting;

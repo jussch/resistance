@@ -15,14 +15,14 @@ require('styles//Game.scss');
 
 class GameComponent extends React.Component {
   render() {
-    const {users, game, players} = this.props;
+    const {users, game, players, player} = this.props;
 
     let listComp;
     let missionDetails;
     if (!game.started) {
       listComp = <ListComponent list={users.list}/>;
     } else {
-      listComp = <PlayerListComponent players={players}/>;
+      listComp = <PlayerListComponent players={players} player={player}/>;
       missionDetails = <MissionDetailsListComponent {...this.props}/>;
     }
 

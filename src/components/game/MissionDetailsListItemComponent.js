@@ -7,10 +7,17 @@ require('styles/game/MissionDetailsListItem.scss');
 class MissionDetailsListItemComponent extends React.Component {
   render() {
     const mission = this.props.mission;
+    let className = 'mission-circle';
+    if (mission.report.winner === 'spies') className += ' spy-back';
+    if (mission.report.winner === 'resistance') className += ' res-back';
+    if (this.props.isCurrent) className += ' is-current';
+
     return (
       <li className="missiondetailslistitem-component">
-        <div className="mission-data">RoundWinner: {mission.winner}</div>
-        <div className="mission-data">Sabotages: {mission.sabotages} / 1(SS)</div>
+        <div className={className}>
+          <div className="mission-players-needed">{mission.playersNeeded}</div>
+          <div className="mission-sabotages-needed">{mission.sabotagesNeeded}</div>
+        </div>
       </li>
     );
   }

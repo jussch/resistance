@@ -2,6 +2,9 @@
  * Created by Justin on 2016-02-16.
  */
 const io = require('socket.io-client');
+
+const getError = require('../actions/getError');
+
 const userJoin = require('../actions/users/join');
 const userLeave = require('../actions/users/leave');
 const userFetch = require('../actions/users/fetch');
@@ -34,6 +37,8 @@ const playerSentVote = require('../actions/player/playerSentVote');
 
 module.exports = function connect(store) {
   var socket = io();
+
+  socket.on('error', data => store.dispatch(getError(data)));
 
   socket.on('users:join', data => store.dispatch(userJoin(data)));
   socket.on('users:leave', data => store.dispatch(userLeave(data)));
@@ -68,7 +73,7 @@ module.exports = function connect(store) {
         room: state.users.requestRoom || null,
         nickname: state.users.myNickname,
       });
-      
+
       store.dispatch(userAccessSent());
     }
 

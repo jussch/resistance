@@ -1,7 +1,18 @@
+@import '../colors';
 .selectableplayerlistitem-component {
-  border: 1px dashed #f00;
-  &.highlighted {
-    color: #333;
-    background: #fff;
+  background: $action-background-color;
+  cursor: pointer;
+  position: relative;
+  &:hover {
+    background: $action-hover-background-color;
+  }
+  &.disabled {
+    cursor: default;
+    background: #888;
+  }
+
+  .selected-box {
+    position: absolute;
+    left: 5px;
   }
 }

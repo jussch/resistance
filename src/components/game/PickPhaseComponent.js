@@ -32,17 +32,30 @@ class PickPhaseComponent extends React.Component {
 
   render() {
     const game = this.props.game;
+    const current = this.props.player;
     const leader = _.find(this.props.players, 'isLeader');
     const numPlayers = game.settings.rounds[game.currentRound];
+    const playersLeft = numPlayers - current.selectedCandidates.length;
     const failsNeeded = game.settings.fails[game.currentRound] === 1 ? 'once' : 'twice';
 
     if (this.props.player.isCurrentLeader) {
       return (
         <div className="pickphase-component">
-          You are the leader. Select the {numPlayers} players you want to send on a mission.
-          The spies need to fail this mission {failsNeeded}.
-          <SelectablePlayerListComponent {...this.props} onSelect={this.onSelect.bind(this)} />
-          <button onClick={this.handleClick.bind(this)}>Finished</button>
+          <h1>You are the <strong className="leader-text">leader</strong>.</h1>
+          <div>Select the {numPlayers} players you want to send on a mission.</div>
+          <div>The spies need to <span className="spy-text">sabotage</span> this mission <b>{failsNeeded}</b> to score a point.</div>
+          <SelectablePlayerListComponent {...this.props} onSelect={this.onSelect.bind(this)} playersLeft={playersLeft} />
+          <div className="button-group">
+            <span className="button-group-addon">
+              <div>Player Left</div>
+              <div className="players-left">{playersLeft}</div>
+            </span>
+            <button
+              className="button"
+              onClick={this.handleClick.bind(this)}
+              disabled={playersLeft !== 0}
+            >Finished</button>
+          </div>
         </div>
       )
     }

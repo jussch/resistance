@@ -12,6 +12,7 @@ const reducers = {
   users: require('..\\reducers\\users.js'),
   game: require('..\\reducers\\game.js'),
   player: require('..\\reducers\\player.js'),
-  players: require('..\\reducers\\players.js')
+  players: require('..\\reducers\\players.js'),
+  errors: require('..\\reducers\\errors.js')
 };
 module.exports = combineReducers(reducers);

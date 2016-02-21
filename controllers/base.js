@@ -14,8 +14,12 @@ module.exports = function UserControllers(io) {
     console.log('Connection Received:', socket.nickname);
 
     socket.on('users:access', (data) => {
-      if (!GameController.canJoinGame(data.room)) return;
       socket.nickname = data.nickname;
+      if (!GameController.canJoinGame(socket, data.room)) {
+        socket.emit('error', { message: 'Cannot join that lobby.' });
+        return;
+      }
+
       goToRoom(data.room);
     });
 

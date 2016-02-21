@@ -1,3 +1,12 @@
 .missiondetailslist-component {
-  border: 1px dashed #f00;
+  display: flex;
+  justify-content: center;
+  margin: 20px 0 0 0;
+  padding: 0;
+
+  > li {
+    list-style: none;
+    flex: 1;
+    max-width: 20%;
+  }
 }

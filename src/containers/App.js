@@ -14,14 +14,15 @@ import Main from '../components/Main';
 /* Populated by react-webpack-redux:reducer */
 class App extends Component {
   render() {
-    const {actions, users, game, player, players} = this.props;
+    const {actions, users, game, player, players, errors} = this.props;
     return (
       <Main
         actions={actions}
         users={users}
         game={game}
         player={player}
-        players={players}/>
+        players={players}
+        errors={errors}/>
     );
   }
 }
@@ -35,7 +36,8 @@ App.propTypes = {
   users: PropTypes.object.isRequired,
   game: PropTypes.object.isRequired,
   player: PropTypes.object.isRequired,
-  players: PropTypes.object.isRequired
+  players: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired
 };
 function mapStateToProps(state) {
   /* Populated by react-webpack-redux:reducer */
@@ -43,7 +45,8 @@ function mapStateToProps(state) {
     users: state.users,
     game: state.game,
     player: state.player,
-    players: state.players
+    players: state.players,
+    errors: state.errors
   };
   return props;
 }
@@ -84,7 +87,8 @@ function mapDispatchToProps(dispatch) {
     requestRematch: require('..\\actions\\player\\requestRematch.js'),
     receivedRematch: require('..\\actions\\player\\receivedRematch.js'),
     sentRematch: require('..\\actions\\player\\sentRematch.js'),
-    accessSent: require('..\\actions\\users\\accessSent.js')
+    accessSent: require('..\\actions\\users\\accessSent.js'),
+    getError: require('..\\actions\\getError.js')
   };
   const actionMap = { actions: bindActionCreators(actions, dispatch) };
   return actionMap;

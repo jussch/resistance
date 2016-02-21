@@ -89,7 +89,10 @@ module.exports = function(state = {}, action) {
     // AKA. ENTER_PICK
     case 'SELECT_LEADER': {
       const wasLeader = _.find(nextState, { isLeader: true });
-      if (wasLeader) wasLeader.wasLeader = true;
+      if (wasLeader) {
+        wasLeader.isLeader = false;
+        wasLeader.wasLeader = true;
+      }
 
       nextState[action.parameter.leader].isLeader = true;
       return nextState;
@@ -102,6 +105,16 @@ module.exports = function(state = {}, action) {
 
       _.each(action.parameter.candidates, (playerName) => {
         nextState[playerName].isCandidate = true;
+      });
+
+      return nextState;
+    } break;
+    case 'ENTER_MISSION': {
+      console.log('ENTER_MISSION in players')
+      _.each(nextState, (player) => {
+        player.isLeader = false;
+        player.wasLeader = false;
+        console.log('setting', player.nickname, 'to', player.isLeader);
       });
 
       return nextState;

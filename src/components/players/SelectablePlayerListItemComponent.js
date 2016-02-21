@@ -11,11 +11,15 @@ class SelectablePlayerListItemComponent extends React.Component {
     this.props.onSelect(this.props.player);
   }
   render() {
-    const highlightClass = 'selectableplayerlistitem-component ' +
-      (this.props.player.isSelected ? 'highlighted' : '');
+    const player = this.props.player;
+    const checkBox = `fa fa-${player.isSelected ? 'check-' : ''}square-o fa-fw`;
+    let className = 'selectableplayerlistitem-component';
+    if (player.isSelected) className += ' highlighted';
+    if (this.props.disabled) className += ' disabled';
 
     return (
-      <li className={highlightClass} onClick={this.handleClick.bind(this)}>
+      <li className={className} onClick={this.handleClick.bind(this)}>
+        <span className="selected-box"><i className={checkBox}/></span>
         <PlayerComponent player={this.props.player}/>
       </li>
     );

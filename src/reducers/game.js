@@ -12,11 +12,36 @@ const initialState = {
   requestCancel: false,
   settings: null,
   phase: 'lobby',
-  leader: null,
   currentRound: 0,
+  currentLeader: null,
+  currentCandidates: [],
   missions: [],
   winner: null,
 };
+
+function createMission(initialData) {
+  return {
+    playersNeeded: initialData.playersNeeded,
+    sabotagesNeeded: initialData.sabotagesNeeded,
+    report: {
+      sabotages: null,
+      winner: null,
+      players: [],
+    },
+    suggestedTeams: [
+
+    ],
+  }
+}
+
+function createTeam(data) {
+  return {
+    leader: data.leader,
+    players: data.players,
+    passes: data.passes,
+    rejections: data.rejections,
+  }
+}
 
 module.exports = function(state = initialState, action) {
   /* Keep the reducer clean - do not mutate the original state. */
@@ -32,42 +57,65 @@ module.exports = function(state = initialState, action) {
       return nextState;
     } break;
     case 'RECEIVED_REMATCH': {
+      console.log('received rematch!!!!!');
       nextState.started = true;
       nextState.phase = 'lobby';
       nextState.winner = null;
       nextState.currentRound = 0;
       nextState.missions = [];
-      nextState.leader = null;
+      nextState.settings = null;
       return nextState;
     } break;
     case 'ENTER_MISSION': {
       nextState.phase = 'mission';
+      nextState.missions[state.currentRound].report.players = _.clone(state.currentCandidates);
       return nextState;
     } break;
     case 'ENTER_VOTE': {
       nextState.phase = 'vote';
+      nextState.currentCandidates = action.parameter.candidates;
       return nextState;
     } break;
     case 'GAME_OVER': {
       nextState.phase = 'end';
       nextState.winner = action.parameter.winner;
+      nextState.currentRound = -1;
       return nextState;
     } break;
     case 'GET_SETTINGS': {
       nextState.settings = _.extend({}, action.parameter);
+      _.times(5, (i) => {
+        nextState.missions[i] = createMission({
+          playersNeeded: nextState.settings.rounds[i],
+          sabotagesNeeded: nextState.settings.fails[i],
+        });
+      });
+
+      return nextState;
+    } break;
+    case 'GET_PLAYER_VOTES': {
+      nextState.missions[state.currentRound].suggestedTeams.push(createTeam({
+        leader: state.currentLeader,
+        players: _.clone(state.currentCandidates),
+        passes: action.parameter.passes,
+        rejections: action.parameter.fails,
+      }));
+
       return nextState;
     } break;
     case 'MISSION_COMPLETE': {
-      nextState.missions.push({
+      _.extend(nextState.missions[state.currentRound].report, {
         winner: action.parameter.winner,
         sabotages: action.parameter.sabotages
       });
+
       return nextState;
     } break;
     // aka. ENTER_PICK
     case 'SELECT_LEADER': {
       nextState.phase = 'pick';
       nextState.currentRound = action.parameter.round;
+      nextState.currentLeader = action.parameter.leader;
       return nextState;
     } break;
     case 'COUNTDOWN': {

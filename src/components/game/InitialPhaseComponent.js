@@ -15,12 +15,14 @@ class InitialPhaseComponent extends React.Component {
     const {player, players} = this.props;
 
     if (player.ready) {
-      return (<div className="initialphase-component">Ready.</div>);
+      return (<div className="initialphase-component"><h1>Ready</h1></div>);
     }
 
+    let title;
     let affiliation;
     let teammatesString;
     if (player.spy) {
+      title = <h1 className="spy-text">Spy</h1>;
       affiliation = 'spies';
       let teammates = _.chain(players)
         .filter(p => p.spy && p.nickname !== player.nickname)
@@ -29,14 +31,16 @@ class InitialPhaseComponent extends React.Component {
 
       teammatesString = `Your teammate${teammates.length ? 's are' : ' is'} ${teammates}`;
     } else {
+      title = <h1 className="res-text">Resistance</h1>;
       affiliation = 'resistance';
       teammatesString = 'You don\'t know who you teammates are';
     }
 
     return (
       <div className="initialphase-component">
+        {title}
         You are apart of the {affiliation}. {teammatesString}.
-        <button onClick={this.handleClick.bind(this)}>Got it.</button>
+        <button className="button" onClick={this.handleClick.bind(this)}>Got it.</button>
       </div>
     );
   }

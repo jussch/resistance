@@ -23,13 +23,11 @@ class MissionPhaseComponent extends React.Component {
 
     return (
       <div className="missionphase-component">
-        <button onClick={this.handlePass.bind(this)}>
-          <i className="fa fa-times"/>
-          Pass Mission
+        <button className="button res-text" onClick={this.handlePass.bind(this)}>
+          <h1><i className="fa fa-check fa-fw"/>Pass Mission</h1>
         </button>
-        <button onClick={this.handleSabotage.bind(this)}>
-          <i className="fa fa-check"/>
-          Sabotage Mission
+        <button className="button spy-text" onClick={this.handleSabotage.bind(this)}>
+          <h1><i className="fa fa-times fa-fw"/>Sabotage Mission</h1>
           <div className="disclaimer">
             (You only want to do this if you are a spy.)
           </div>
