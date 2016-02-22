@@ -1,5 +1,6 @@
 'use strict';
 let path = require('path');
+let autoprefixer = require('autoprefixer');
 let port = 8000;
 let srcPath = path.join(__dirname, '/../src');
 let publicPath = '/assets/';
@@ -68,6 +69,6 @@ module.exports = {
     ]
   },
   postcss: function () {
-    return [];
+    return [autoprefixer];
   }
 };

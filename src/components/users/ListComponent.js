@@ -10,7 +10,7 @@ class ListComponent extends React.Component {
     const {list} = this.props;
     return (
       <div className="list-component">
-        <h2>Users</h2>
+        <h2 className="spy-text">Players in the Lobby</h2>
         <ul className="user-list">
           {list.map((user, key) => (<ListItemComponent user={user} key={key}/>))}
         </ul>

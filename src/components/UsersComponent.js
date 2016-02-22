@@ -25,6 +25,9 @@ class UsersComponent extends React.Component {
       maxLength: 12,
       style: { textTransform: 'uppercase' },
       autoComplete: false,
+      autoCapitalize: false,
+      spellCheck: false,
+      autoCorrect: false,
       disabled: !!users.requestRoom,
     };
 
@@ -33,10 +36,10 @@ class UsersComponent extends React.Component {
 
     return (
       <div className="users-component">
-        <h1 className="res-color">Resistance</h1>
+        <h1 className="res-color">I AM NOT A SPY - The Game</h1>
         <h2>Join a room</h2>
         <ErrorHandlerComponent errors={this.props.errors}/>
-        <form onSubmit={this.handleSubmit.bind(this)} autoComplete="off">
+        <form onSubmit={this.handleSubmit.bind(this)}>
           <div className="form-group">
             <span className="form-group-addon">
               <i className="fa fa-user fa-fw"/>

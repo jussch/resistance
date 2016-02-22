@@ -20,7 +20,7 @@ class LobbyComponent extends React.Component {
 
     return (
       <div className="lobby-component">
-        <h1>[GAME]: {users.room}</h1>
+        <h1 className="res-text">[GAME]: {users.room}</h1>
         <ErrorHandlerComponent errors={this.props.errors}/>
         {actionComp}
       </div>

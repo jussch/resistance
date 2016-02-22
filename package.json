@@ -11,7 +11,7 @@
   "scripts": {
     "clean": "rimraf dist/*",
     "copy": "copyfiles -f ./src/index.html ./src/favicon.ico ./dist",
-    "dist": "npm run copy & webpack --env=dist",
+    "dist": "webpack --env=dist",
     "lint": "eslint ./src",
     "posttest": "npm run lint",
     "release:major": "npm version major && npm publish && git push --follow-tags",
@@ -27,6 +27,7 @@
   "keywords": [],
   "author": "jussch",
   "devDependencies": {
+    "autoprefixer": "^6.3.3",
     "babel-core": "^6.0.0",
     "babel-eslint": "^5.0.0-beta4",
     "babel-loader": "^6.0.0",
@@ -81,6 +82,7 @@
     "react-redux": "^4.1.2",
     "redux": "^3.1.5",
     "redux-thunk": "^1.0.3",
+    "serve-favicon": "^2.3.0",
     "socket.io": "^1.4.5"
   }
 }

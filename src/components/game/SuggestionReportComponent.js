@@ -33,9 +33,13 @@ class SuggestionReportComponent extends React.Component {
         <h3>Suggestion {successComp}</h3>
         <span className="leader-text">
           <PlayerComponent player={{nickname: suggestion.leader}}/>
-        </span> promoted {team}.
-        <div className="success-text">Players passing the vote: {passed}.</div>
-        <div className="fail-text">Players rejecting the vote: {rejected}.</div>
+        </span> promoted <span className="player-component-list">{team}</span>
+        <div className="success-text">Passed:
+          <div className="player-component-list">{passed}</div>
+        </div>
+        <div className="fail-text player-component-list">Rejected:
+          <div className="player-component-list">{rejected}</div>
+        </div>
       </div>
     );
   }

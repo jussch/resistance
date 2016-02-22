@@ -1,6 +1,16 @@
-
+@import '../colors';
 .player-component {
   padding: 0 2px;
+  position: relative;
+  + .player-component {
+    padding: 0 4px;
+    margin-left: 2px;
+  }
+  .player-component-list > & {
+    display: inline-block;
+    border: 1px solid $border-color;
+    padding: 2px 7px;
+  }
 }
 
 .player-name {

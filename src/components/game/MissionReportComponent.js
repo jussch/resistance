@@ -23,7 +23,7 @@ class MissionReportComponent extends React.Component {
     return (
       <div className="missionreport-component">
         <h3>{winner} won the round.</h3>
-        <div>These players went on a mission: {team}</div>
+        <div className="player-component-list">Team: {team}</div>
         <div>The mission was sabotaged {report.sabotages} {times} resulting in a {winner} point.</div>
       </div>
     );

@@ -13,6 +13,7 @@
   background: $action-background-color;
   outline: 0;
   cursor: pointer;
+  font-size: 24px;
   &:hover,
   &:focus {
     background: $action-hover-background-color;
@@ -21,12 +22,13 @@
   &.disabled {
     background: #888;
   }
-
   h1 {
+    font-size: 36px;
     margin: 0;
     padding: 0;
   }
   .disclaimer {
+    font-size: 18px;
     font-weight: 300;
     font-style: italic;
     color: #aaa;

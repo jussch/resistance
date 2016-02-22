@@ -1,31 +1,19 @@
 /*eslint no-console:0 */
 require('core-js/fn/object/assign');
-//var webpack = require('webpack');
-//var WebpackDevServer = require('webpack-dev-server');
-//var config = require('./webpack.config');
-//var open = require('open');
-//
-//new WebpackDevServer(webpack(config), config.devServer)
-//.listen(config.port, 'localhost', function(err) {
-//  if (err) {
-//    console.log(err);
-//  }
-//  console.log('Listening at localhost:' + config.port);
-//  console.log('Opening your system browser...');
-//  open('http://localhost:' + config.port + '/webpack-dev-server/');
-//});
-
 const http = require('http');
 const express = require('express');
 const path = require('path');
+const favicon = require('serve-favicon');
 
 // Create the app, setup the webpack middleware
 const app = express();
+app.use(favicon(path.join(__dirname, './favicon.ico')));
 
 // You probably have other paths here
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '/src/index.html'));
 });
+
 
 if (process.env.NODE_ENV !== 'production') {
   console.log('Loading webpack...');
